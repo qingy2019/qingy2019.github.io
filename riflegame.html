@@ -50,7 +50,9 @@
                 lifeSpan: 1 // Life span of 1 second
             };
 
-            particles.push(particle);
+
+            if (particles.length <= 500) particles.push(particle);
+
         }
     }
     const rifleImg = new Image();
@@ -63,11 +65,13 @@
     };
     rifleImg.src = 'rifle.png';
 
-    const bulletRadius = 9;
+    let bulletRadius = 15;
     let bullets = [];
 
     let bulletsNoHarm = [];
-    const bulletSpeed = 20;
+    let bulletSpeed = 15;
+    let gunHeight = 100;
+    let gunRPM = 100;
 
     let rifle = {
         x: canvas.width / 2,
@@ -84,30 +88,13 @@
         dx: 2,
         dy: 2,
         gravity: 0.2,
-        dampening: 0.99
+        dampening: 1
     };
 
     function init() {
         document.addEventListener('mousemove', handleMouseMove);
         draw();
     }
-    setInterval(() => {
-        // Calculate the angle from the ball to the gun
-        const dx = rifle.x - (ball.x+5);
-        const dy = rifle.y - (ball.y+5);
-        const angle = Math.atan2(dy, dx);
-
-        // Create a new bullet at the edge of the ball in the direction of the gun
-        let bullet = {
-            x: ball.x + Math.cos(angle) * ball.radius + 5,
-            y: ball.y + Math.sin(angle) * ball.radius + 5,
-            dx: Math.cos(angle) * bulletSpeed,
-            dy: Math.sin(angle) * bulletSpeed,
-            visible: true,
-            shotByBall: true // Indicate that this bullet was shot by the ball
-        };
-        bullets.push(bullet);
-    }, 1000); // 1000 milliseconds = 1 second
     // setInterval(() => {
     //     if (good) shoot();
     // }, 200); // 1000 milliseconds = 1 second
@@ -133,6 +120,96 @@
     canvas.addEventListener('mouseup', function(event) {
         dragging = false;
     });
+    function updateParticles() {
+        for (let i = 0; i < particles.length; i++) {
+            const particle = particles[i];
+
+            // Update particle position
+            particle.x += particle.dx;
+            particle.y += particle.dy;
+
+            // Decrease particle life span
+            particle.lifeSpan -= 0.02; // Decrease by 0.02 each frame to last about 1 second
+
+            // Remove particle if its life span reaches 0
+            if (particle.lifeSpan <= 0) {
+                particles.splice(i, 1);
+                console.log("Removed");
+                i--; // Adjust index after removing element
+                continue;
+            }
+
+            // Draw particle
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, 5, 0, Math.PI * 2);
+            // Set color based on life span (transition from yellow to red)
+            ctx.fillStyle = `hsl(${particle.lifeSpan * 60}, 100%, 50%)`;
+            ctx.fill();
+        }
+    }
+    function updateBall() {
+        ball.dy += ball.gravity;
+        ball.dy *= ball.dampening; // Dampen vertical velocity
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        // Handle ball collisions with screen boundaries
+        if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+            ball.dx *= -1.05; // Reverse horizontal direction and add a small bounce
+        }
+        if (ball.y + ball.radius > canvas.height) {
+            // Prevent the ball from sinking into the ground
+            ball.y = canvas.height - ball.radius;
+            ball.dy *= -1.05; // Reverse vertical direction and add a small bounce
+            ball.dy *= ball.dampening; // Dampen vertical velocity
+        }
+        if (ball.y - ball.radius < 0) {
+            ball.dy *= -1.05; // Reverse vertical direction and add a small bounce
+        }
+        let maxSpeed = 10
+        ball.dx = Math.max(-maxSpeed, Math.min(maxSpeed, ball.dx));
+        ball.dy = Math.max(-maxSpeed, Math.min(maxSpeed, ball.dy));
+    }
+
+
+    function animateSunShotBullet(bullet) {
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, bullet.sunShotBulletRadius, 0, Math.PI * 2);
+        ctx.fillStyle = 'orange';
+        ctx.fill();
+
+        // Check if bullet hits the ball
+
+
+        // Check if bullet hits the ball
+        const dx2 = bullet.x - ball.x;
+        const dy2 = bullet.y - ball.y;
+        const distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+        if (distance2 < bullet.sunShotBulletRadius + ball.radius && bullet.visible && !bullet.shotByBall) {
+            // Bullet hits the ball, adjust ball's velocity accordingly
+            const angle = Math.atan2(dy2, dx2);
+            ball.dx -= Math.cos(angle) * bulletSpeed * 0.2;
+            ball.dy -= Math.sin(angle) * bulletSpeed * 0.4;
+            scoreCounter++;
+            document.getElementById('score').textContent = 'Score: ' + scoreCounter;
+            createParticles(ball.x, ball.y);
+            // Make bullet invisible
+            bullet.visible = false;
+            if (!bullet.shotByBall) {
+                bullet.visible = false;
+            }
+        }
+
+// Update bullet velocity based on the new angle
+        bullet.dx = Math.cos(bullet.angle) * bulletSpeed;
+        bullet.dy = Math.sin(bullet.angle) * bulletSpeed;
+        bullet.x += bullet.dx;
+        bullet.y += bullet.dy;
+        bullet.sunShotBulletRadius+=0.4;
+    }
+
+
+    setInterval(updateBall, 1000 / 60); // 60 frames per second (FPS
     function draw() {
         const ball2 = {
             x: ball.x,
@@ -152,21 +229,7 @@
         for (let t = 0; t < 100; t++) {
             let bullets2 = structuredClone(bullets);
             for (let i = 0; i < bullets2.length; i++) {
-                if (bullets2[i].shotByBall) {
-                    bullets2[i].visible = true;
-                    ctx.beginPath();
-                    ctx.arc(bullets2[i].x, bullets2[i].y, bulletRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'black';
-                    ctx.fill();
-                    const dx = bullets2[i].x - rifle.x;
-                    const dy = bullets2[i].y - rifle.y;
-                    bullets2[i].x += Math.cos(bullets2[i].angle) * bulletSpeed;
-                    bullets2[i].y += Math.sin(bullets2[i].angle) * bulletSpeed;
-                } else if (bullets2[i].visible) {
-                    ctx.beginPath();
-                    ctx.arc(bullets2[i].x, bullets2[i].y, bulletRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'black';
-                    ctx.fill();
+                if (bullets2[i].visible) {
 
                     // Check if bullet hits the ball
 
@@ -178,8 +241,8 @@
                     if (distance2 < bulletRadius + ball2.radius && bullets2[i].visible && !bullets2[i].shotByBall) {
                         // Bullet hits the ball, adjust ball's velocity accordingly
                         const angle = Math.atan2(dy2, dx2);
-                        ball2.dx -= Math.cos(angle) * bulletSpeed * 0.2;
-                        ball2.dy -= Math.sin(angle) * bulletSpeed * 0.2;
+                        ball2.dx -= Math.cos(angle) * bulletSpeed * 0.1;
+                        ball2.dy -= Math.sin(angle) * bulletSpeed * 0.1;
                         // Make bullet invisible
                         bullets2[i].visible = false;
                         if (!bullets2[i].shotByBall) {
@@ -202,6 +265,10 @@
                         // Adjust index after removing element
                         i--;
                     }
+                } else {
+                    bullets2.splice(i, 1);
+                    // Adjust index after removing element
+                    i--;
                 }
             }
             ball2.dy += ball2.gravity;
@@ -211,16 +278,16 @@
 
             // Handle ball collisions with screen boundaries
             if (ball2.x + ball2.radius > canvas.width || ball2.x - ball2.radius < 0) {
-                ball2.dx *= -1; // Reverse horizontal direction
+                ball2.dx *= -0.96; // Reverse horizontal direction
             }
             if (ball2.y + ball2.radius > canvas.height) {
                 // Prevent the ball from sinking into the ground
                 ball2.y = canvas.height - ball2.radius;
-                ball2.dy *= -1; // Reverse vertical direction
+                ball2.dy *= -0.96; // Reverse vertical direction
                 ball2.dy *= ball2.dampening; // Dampen vertical velocity
             }
             if (ball2.y - ball2.radius < 0) {
-                ball2.dy *= -1; // Reverse vertical direction
+                ball2.dy *= -0.96; // Reverse vertical direction
             }
 
 
@@ -248,7 +315,7 @@
         rifle.angle = Math.atan2(dy, dx);
 
         let aspectRatio = rifleImg.width / rifleImg.height;
-        let desiredHeight = 100; // or whatever height you want
+        let desiredHeight = gunHeight; // or whatever height you want
         let calculatedWidth = desiredHeight * aspectRatio;
 
 // Draw rifle
@@ -261,7 +328,11 @@
         ctx.setLineDash([5, 15]); // Set line style to dashed
 
         if (good) {
-            ctx.strokeStyle = 'green';
+            if (weapons[currentWeaponIndex] === 'sunshot.png') {
+                ctx.strokeStyle = 'orange';
+            } else {
+                ctx.strokeStyle = 'green';
+            }
             ctx.lineWidth = 10;
             // if (!lastTime) shoot();
         }
@@ -292,81 +363,77 @@
         ctx.fill();
 
         // Update ball position
-        ball.dy += ball.gravity;
-        ball.dy *= ball.dampening; // Dampen vertical velocity
-        ball.x += ball.dx;
-        ball.y += ball.dy;
 
-        // Handle ball collisions with screen boundaries
-        if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
-            ball.dx *= -1; // Reverse horizontal direction
-        }
-        if (ball.y + ball.radius > canvas.height) {
-            // Prevent the ball from sinking into the ground
-            ball.y = canvas.height - ball.radius;
-            ball.dy *= -1; // Reverse vertical direction
-            ball.dy *= ball.dampening; // Dampen vertical velocity
-        }
-        if (ball.y - ball.radius < 0) {
-            ball.dy *= -1; // Reverse vertical direction
-        }
 
         // Draw bullets
+        console.log(bullets.length)
         for (let i = 0; i < bullets.length; i++) {
-            if (bullets[i].shotByBall) {
-                bullets[i].visible = true;
-                ctx.beginPath();
-                ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
-                ctx.fillStyle = 'black';
-                ctx.fill();
-                const dx = bullets[i].x - rifle.x;
-                const dy = bullets[i].y - rifle.y;
-                bullets[i].x += Math.cos(bullets[i].angle) * bulletSpeed;
-                bullets[i].y += Math.sin(bullets[i].angle) * bulletSpeed;
-            } else if (bullets[i].visible) {
-                ctx.beginPath();
-                ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
-                ctx.fillStyle = 'black';
-                ctx.fill();
-
-                // Check if bullet hits the ball
-
-
-                // Check if bullet hits the ball
-                const dx2 = bullets[i].x - ball.x;
-                const dy2 = bullets[i].y - ball.y;
-                const distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-                if (distance2 < bulletRadius + ball.radius && bullets[i].visible && !bullets[i].shotByBall) {
-                    // Bullet hits the ball, adjust ball's velocity accordingly
-                    const angle = Math.atan2(dy2, dx2);
-                    ball.dx -= Math.cos(angle) * bulletSpeed * 0.7;
-                    ball.dy -= Math.sin(angle) * bulletSpeed * 0.7;
-                    scoreCounter++;
-                    document.getElementById('score').textContent = 'Score: ' + scoreCounter;
-                    createParticles(ball.x, ball.y);
-                    // Make bullet invisible
-                    bullets[i].visible = false;
-                    if (!bullets[i].shotByBall) {
-                        bullets[i].visible = false;
+            if (bullets[i].visible) {
+                if (bullets[i].isSunShot) {
+                    animateSunShotBullet(bullets[i]);
+                } else {
+                    if (weapons[currentWeaponIndex] === 'osteostriga.png') {
+                        // Draw a dark green diamond for the bullet
+                        ctx.beginPath();
+                        ctx.moveTo(bullets[i].x, bullets[i].y - bulletRadius);
+                        ctx.lineTo(bullets[i].x + bulletRadius * 2, bullets[i].y); // Increase distance for right point
+                        ctx.lineTo(bullets[i].x, bullets[i].y + bulletRadius);
+                        ctx.lineTo(bullets[i].x - bulletRadius * 2, bullets[i].y); // Increase distance for left point
+                        ctx.closePath();
+                        ctx.fillStyle = 'darkgreen';
+                        ctx.fill();
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'black';
+                        ctx.fill();
                     }
-                }
+
+                    // Check if bullet hits the ball
+
+
+                    // Check if bullet hits the ball
+                    const dx2 = bullets[i].x - ball.x;
+                    const dy2 = bullets[i].y - ball.y;
+                    const distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                    if (distance2 < bulletRadius + ball.radius && bullets[i].visible && !bullets[i].shotByBall) {
+                        // Bullet hits the ball, adjust ball's velocity accordingly
+                        const angle = Math.atan2(dy2, dx2);
+                        ball.dx -= Math.cos(angle) * bulletSpeed * 0.2;
+                        ball.dy -= Math.sin(angle) * bulletSpeed * 0.2;
+                        scoreCounter++;
+                        document.getElementById('score').textContent = 'Score: ' + scoreCounter;
+
+                        createParticles(ball.x, ball.y);
+                        // Make bullet invisible
+                        bullets[i].visible = false;
+                        if (!bullets[i].shotByBall) {
+                            bullets[i].visible = false;
+                        }
+                    }
 
 // Update bullet velocity based on the new angle
-                bullets[i].dx = Math.cos(bullets[i].angle) * bulletSpeed;
-                bullets[i].dy = Math.sin(bullets[i].angle) * bulletSpeed;
-                bullets[i].x += bullets[i].dx;
-                bullets[i].y += bullets[i].dy;
-                // Remove bullet if it goes out of the canvas
-                if (
-                    bullets[i].x < 0 ||
-                    bullets[i].x > canvas.width ||
-                    bullets[i].y < 0 ||
-                    bullets[i].y > canvas.height
-                ) {
-                    bullets.splice(i, 1);
-                    // Adjust index after removing element
-                    i--;
+                    bullets[i].dx = Math.cos(bullets[i].angle) * bulletSpeed;
+                    bullets[i].dy = Math.sin(bullets[i].angle) * bulletSpeed;
+                    bullets[i].x += bullets[i].dx;
+                    bullets[i].y += bullets[i].dy;
+                    // Remove bullet if it goes out of the canvas
+
+                    if (
+                        bullets[i].x < 0 ||
+                        bullets[i].x > canvas.width ||
+                        bullets[i].y < 0 ||
+                        bullets[i].y > canvas.height
+                    ) {
+                        bullets.splice(i, 1);
+                        // Adjust index after removing element
+                        i--;
+                    }
                 }
+            } else {
+                bullets.splice(i, 1);
+                // Adjust index after removing element
+                i--;
             }
         }
         for (let i = 0; i < bulletsNoHarm.length; i++) {
@@ -375,42 +442,62 @@
             ctx.fillStyle = 'black';
             ctx.fill();
         }
-        for (let i = 0; i < particles.length; i++) {
-            const particle = particles[i];
+        updateParticles();
 
-            // Update particle position
-            particle.x += particle.dx;
-            particle.y += particle.dy;
+    }
+    setInterval(draw, 1000 / 60); // 60 frames per second (FPS)
 
-            // Decrease particle life span
-            particle.lifeSpan -= 0.02; // Decrease by 0.02 each frame to last about 1 second
 
-            // Remove particle if its life span reaches 0
-            if (particle.lifeSpan <= 0) {
-                particles.splice(i, 1);
-                i--; // Adjust index after removing element
-                continue;
+
+    let recoilDistance = 10; // The distance the gun will move back when a shot is fired
+    let recoilSpeed = 2; // The speed at which the gun will move back and then forward again
+
+    let canShoot = true
+    function recoil() {
+        let recoilBack = setInterval(function() {
+            // Move the gun back in the opposite direction it's aiming
+            rifle.x -= recoilSpeed * Math.cos(rifle.angle);
+            rifle.y -= recoilSpeed * Math.sin(rifle.angle);
+            canShoot = false;
+            recoilDistance -= recoilSpeed;
+            if (recoilDistance <= 0) {
+                clearInterval(recoilBack); // Stop moving the gun back
+                let recoilForward = setInterval(function() {
+                    // Move the gun forward in the direction it's aiming
+                    rifle.x += recoilSpeed * Math.cos(rifle.angle);
+                    rifle.y += recoilSpeed * Math.sin(rifle.angle);
+                    recoilDistance += recoilSpeed;
+                    canShoot = true;
+                    if (recoilDistance >= 10) {
+                        clearInterval(recoilForward); // Stop moving the gun forward
+                    }
+                }, 1000 / 60); // 60 frames per second (FPS)
             }
-
-            // Draw particle
-            ctx.beginPath();
-            ctx.arc(particle.x, particle.y, 5, 0, Math.PI * 2);
-            // Set color based on life span (transition from yellow to red)
-            ctx.fillStyle = `hsl(${particle.lifeSpan * 60}, 100%, 50%)`;
-            ctx.fill();
-        }
-
-        requestAnimationFrame(draw);
+        }, 1000 / 60); // 60 frames per second (FPS)
     }
 
-    function shoot() {
 
+
+    function shoot() {
+        if (!canShoot) return;
+
+        let shootSound = new Audio(weapons[currentWeaponIndex].split('.')[0] +'.wav');
+        // Play the shooting sound
+        shootSound.play();
         let bullet = {
             x: rifle.x + Math.cos(rifle.angle) * rifle.width / 2,
             y: rifle.y + Math.sin(rifle.angle) * rifle.width / 2,
             angle: rifle.angle,
             visible: true
         };
+        // special cases -----
+
+        if (weapons[currentWeaponIndex] === 'sunshot.png') {
+            bullet.isSunShot = true;
+            bullet.sunShotBulletRadius = 5;
+        }
+
+        // -------------------
         bullets.push(bullet);
     }
 
@@ -437,21 +524,54 @@
             keys[key] = true;
             console.log(keys)
         }
+        let moveSpeed = 20
         if (keys['w']) {
             console.log("test333");
-            rifle.y -= 5;
+            rifle.y -= moveSpeed;
         }
         if (keys['s']) {
-            rifle.y += 5;
+            rifle.y += moveSpeed;
         }
         if (keys['a']) {
-            rifle.x -= 5;
+            rifle.x -= moveSpeed;
         }
         if (keys['d']) {
-            rifle.x += 5;
+            rifle.x += moveSpeed;
+        }
+    });
+    let shootIntervalId = null;
+
+    document.addEventListener('keydown', (event) => {
+        const key = event.key.toLowerCase();
+        if (key in keys) {
+            keys[key] = true;
         }
         if (keys[' ']) {
-            shoot();
+            // Calculate the interval between shots in milliseconds
+            const shootInterval = 60000 / gunRPM;
+            // Start shooting
+            if (shootIntervalId === null) {
+                shoot();
+                recoil();
+                shootIntervalId = setInterval(function () {
+                    shoot();
+                    recoil();
+                }, shootInterval);
+            }
+        }
+    });
+
+    document.addEventListener('keyup', (event) => {
+        const key = event.key.toLowerCase();
+        if (key in keys) {
+            keys[key] = false;
+        }
+        if (key === ' ') {
+            // Stop shooting
+            if (shootIntervalId !== null) {
+                clearInterval(shootIntervalId);
+                shootIntervalId = null;
+            }
         }
     });
 
@@ -462,7 +582,48 @@
         }
 
     });
+    let weapons = ['rifle.png', 'machinegun.png', 'ak47.png','sunshot.png', 'osteostriga.png','aceofspades.png']; // Add the paths to your weapon images here
+    let currentWeaponIndex = 0;
 
+    document.addEventListener('keydown', (event) => {
+        if (event.key.toLowerCase() === 'e') {
+            // Switch to the next weapon
+            currentWeaponIndex = (currentWeaponIndex + 1) % weapons.length;
+            if (weapons[currentWeaponIndex] === 'rifle.png') {
+                bulletSpeed = 15;
+                gunHeight=100;
+                gunRPM = 180;
+                bulletRadius=15;
+                console.log("Bullet Speed: " + bulletSpeed)
+            } else if (weapons[currentWeaponIndex] === 'machinegun.png') {
+                bulletSpeed = 6;
+                gunHeight = 100;
+                gunRPM = 2000;
+                bulletRadius=5;
+            } else if (weapons[currentWeaponIndex] === 'ak47.png') {
+                bulletSpeed = 10;
+                gunHeight = 100;
+                gunRPM = 600;
+                bulletRadius=8;
+            } else if (weapons[currentWeaponIndex] === "sunshot.png") {
+                bulletSpeed = 14;
+                gunHeight = 100;
+                gunRPM = 150;
+                bulletRadius = 16;
+            } else if (weapons[currentWeaponIndex] === "osteostriga.png") {
+                bulletSpeed = 10;
+                gunHeight = 100;
+                gunRPM = 900;
+                bulletRadius = 10;
+            } else if (weapons[currentWeaponIndex] === "aceofspades.png") {
+                bulletSpeed = 15;
+                gunHeight = 100;
+                gunRPM = 120;
+                bulletRadius = 10;
+            }
+            rifleImg.src = weapons[currentWeaponIndex];
+        }
+    });
 
 </script>
 </body>
