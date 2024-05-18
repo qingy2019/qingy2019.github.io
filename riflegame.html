@@ -145,7 +145,9 @@
         };
         let good2 = false;
         let bulletX = rifle.x + Math.cos(rifle.angle) * rifle.width / 2;
+        let bulletDX = Math.cos(rifle.angle) * bulletSpeed;
         let bulletY = rifle.y + Math.sin(rifle.angle) * rifle.width / 2;
+        let bulletDY = Math.sin(rifle.angle) * bulletSpeed;
         let angle = rifle.angle;
         for (let t = 0; t < 100; t++) {
             let bullets2 = structuredClone(bullets);
@@ -221,8 +223,11 @@
                 ball2.dy *= -1; // Reverse vertical direction
             }
 
-            bulletX += Math.cos(angle) * bulletSpeed;
-            bulletY += Math.sin(angle) * bulletSpeed;
+
+            bulletDX = Math.cos(angle) * bulletSpeed;
+            bulletDY = Math.sin(angle) * bulletSpeed;
+            bulletX += bulletDX;
+            bulletY += bulletDY;
 
             // Check if bullet hits the ball
             const dx2 = bulletX - ball2.x;
@@ -345,32 +350,10 @@
                         bullets[i].visible = false;
                     }
                 }
-                const dx = ball.x - bullets[i].x;
-                const dy = ball.y - bullets[i].y;
-                const angleToBall = Math.atan2(dy, dx);
-                let angleToMove = bullets[i].angle;
-
-// Calculate the difference between the current angle and the target angle
-                let angleDifference = angleToBall - bullets[i].angle;
-
-// Adjust the angle difference to be between -π and π
-                if (angleDifference > Math.PI) angleDifference -= 2 * Math.PI;
-                if (angleDifference < -Math.PI) angleDifference += 2 * Math.PI;
-
-// Only adjust the bullet's angle if the angle difference is within a certain range
-                const maxAngleDifference = Math.PI / 4; // Adjust this value as needed
-                if (Math.abs(angleDifference) < maxAngleDifference) {
-                    // Clamp the angle difference to a maximum value
-                    const maxAngleChange = 0.1; // Adjust this value as needed
-                    angleDifference = Math.max(Math.min(angleDifference, maxAngleChange), -maxAngleChange);
-
-                    // Adjust the bullet's angle
-                    angleToMove += angleDifference;
-                }
 
 // Update bullet velocity based on the new angle
-                bullets[i].dx = Math.cos(angleToMove) * bulletSpeed;
-                bullets[i].dy = Math.sin(angleToMove) * bulletSpeed;
+                bullets[i].dx = Math.cos(bullets[i].angle) * bulletSpeed;
+                bullets[i].dy = Math.sin(bullets[i].angle) * bulletSpeed;
                 bullets[i].x += bullets[i].dx;
                 bullets[i].y += bullets[i].dy;
                 // Remove bullet if it goes out of the canvas
