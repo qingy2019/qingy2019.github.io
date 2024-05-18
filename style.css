@@ -1,0 +1,204 @@
+.pushable {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+}
+.shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
+    will-change: transform;
+    transform: translateY(2px);
+    transition:
+            transform
+            600ms
+            cubic-bezier(.3, .7, .4, 1);
+}
+.edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+.front {
+    display: block;
+    position: relative;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    will-change: transform;
+    transform: translateY(-4px);
+    transition:
+            transform
+            600ms
+            cubic-bezier(.3, .7, .4, 1);
+}
+.blueedge {
+    background: linear-gradient(
+            to left,
+            hsl(212deg, 100%, 33%) 0%,
+            hsl(212deg, 100%, 33%) 8%,
+            hsl(212deg, 100%, 33%) 92%,
+            hsl(212deg, 100%, 33%) 100%
+    );
+}
+.bluefront {
+    background: #037ffc; /* Changed background color to blue */
+    color: white;
+}
+.pushable:hover {
+    filter: brightness(110%);
+}
+.pushable:hover .front {
+    transform: translateY(-6px);
+    transition:
+            transform
+            250ms
+            cubic-bezier(.3, .7, .4, 1.5);
+}
+.pushable:active .front {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+}
+.pushable:hover .shadow {
+    transform: translateY(4px);
+    transition:
+            transform
+            250ms
+            cubic-bezier(.3, .7, .4, 1.5);
+}
+.pushable:active .shadow {
+    transform: translateY(1px);
+    transition: transform 34ms;
+}
+.pushable:focus:not(:focus-visible) {
+    outline: none;
+}
+.mleft {
+    margin-left: 30px;
+}
+.rounded {
+    border-radius: 10%;
+    width: 150px;
+}
+@font-face {
+    font-family: 'QingFont';
+    src: url('/fonts/Dune_Rise.ttf'); /* IE9 Compat Modes */
+    src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/fonts/Dune_Rise.ttf') format('truetype'), /* Super Modern Browsers */
+    url('/fonts/Dune_Rise.ttf') format('truetype'), /* Pretty Modern Browsers */
+    url('/fonts/Dune_Rise.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+@font-face {
+    font-family: 'NovaSquare';
+    src: url('/fonts/NovaMono.ttf'); /* IE9 Compat Modes */
+    src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/fonts/NovaMono.ttf') format('truetype'), /* Super Modern Browsers */
+    url('/fonts/NovaMono.ttf') format('truetype'), /* Pretty Modern Browsers */
+    url('/fonts/NovaMono.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+@font-face {
+    font-family: 'Pixel';
+    src: url('/fonts/Pixel.ttf'); /* IE9 Compat Modes */
+    src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/fonts/Pixel.ttf') format('truetype'), /* Super Modern Browsers */
+    url('/fonts/Pixel.ttf') format('truetype'), /* Pretty Modern Browsers */
+    url('/fonts/Pixel.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'Nidus-Sans';
+    src: url('/fonts/Nidus-Sans.ttf'); /* IE9 Compat Modes */
+    src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/fonts/Nidus-Sans.ttf') format('truetype'), /* Super Modern Browsers */
+    url('/fonts/Nidus-Sans.ttf') format('truetype'), /* Pretty Modern Browsers */
+    url('/fonts/Nidus-Sans.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'Product Sans';
+    src: url('/fonts/ProductSans.ttf'); /* IE9 Compat Modes */
+    src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/fonts/ProductSans.ttf') format('truetype'), /* Super Modern Browsers */
+    url('/fonts/ProductSans.ttf') format('truetype'), /* Pretty Modern Browsers */
+    url('/fonts/ProductSans.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+* {
+    font-family: "QingFont", monospace;
+}
+.gradientOutline {
+    --angle: 0deg;
+    width: auto;
+    height: auto;
+    border: 7px solid;
+    border-image: conic-gradient(from var(--angle), #00a7f4, #cd60eb, #cd60eb,#00a7f4) 1;
+
+    animation: 3s rotate linear infinite;
+}
+
+@keyframes rotate {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+.container {
+    margin: auto;
+}
+.first {
+    float: left;
+}
+.second {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+.toggle {
+    appearance: none;
+    display: none;
+}
+
+.toggle+label:before {
+    content: '+';
+    display: inline-block;
+    font-size: large;
+    line-height: 0;
+    transition: transform .5s;
+}
+
+.toggle:checked+label:before {
+    transform: rotate(45deg);
+}
+
+.toggle~.details {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height .5s, opacity .5s;
+}
+
+.toggle:checked~.details {
+    max-height: 100vh;
+    opacity: 1;
+}

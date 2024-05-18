@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shadow's Hangman Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style>
+        * {
+            font-family: "Product Sans", sans-serif;
+        }
+        .simplebutton {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .simplebutton:hover {
+            background-color: #0056b3;
+        }
+        .simplebutton:active {
+            background-color: #004380;
+        }
+
+       .button-39 {
+           background-color: #FFFFFF;
+           border: 1px solid rgb(209,213,219);
+           border-radius: .5rem;
+           box-sizing: border-box;
+           color: #111827;
+           font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+           font-size: .875rem;
+           font-weight: 600;
+           line-height: 1.25rem;
+           padding: 7px 7px;
+           text-align: center;
+           text-decoration: none #D1D5DB solid;
+           text-decoration-thickness: auto;
+           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+           cursor: pointer;
+           user-select: none;
+           -webkit-user-select: none;
+           touch-action: manipulation;
+       }
+
+        .button-39:hover {
+            background-color: rgb(249,250,251);
+        }
+        .button-39:active {
+            background-color: rgb(172, 172, 172);
+        }
+        .button-39:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+
+        .button-39:focus-visible {
+            box-shadow: none;
+        }
+        input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .centered {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.css">
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+</head>
+<body>
+<h3 style="text-align: center; font-family: QingFont,NovaSquare, sans-serif; margin-top: 20px">NORMAL GAME</h3>
+<div id="normal-game-screen">
+    <div id="hangman-game" class="container centered">
+        <div style="width: max-content; padding: 10px">
+            <p id="signed-in-as-text">Signed in as [_]</p>
+            <p id="you-died-text" style="display: none; font-family: QingFont, 'Product Sans', monospace; text-align: center">YOu Died!</p>
+            <img id="hangman-image" src="./hangmanStages/hangmanStart.png" alt="Hangman Image" style="width: 200px">
+            <p id="word-to-guess" style="text-align: center">_ _ _ _ _</p>
+            <p id="guessed-letters"></p>
+            <div id = "guessing-inputs">
+                <input type="text" id="letter-input" maxlength="1">
+                <button id="guess-letter-button" class="simplebutton">Guess</button>
+            </div>
+            <button style="display: none; width: 100%" id="play-again-button" class="simplebutton">Play Again</button>
+            <button id="back-to-menu" class="button-39 centered" style="margin-top: 10px; width: 100%;" role="button">Back to Menu</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="module" src="./chillgame.js"></script>
+</html>

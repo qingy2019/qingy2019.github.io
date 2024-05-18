@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shadow's Hangman Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style>
+        * {
+            font-family: "Product Sans", sans-serif;
+        }
+        .simplebutton {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .simplebutton:hover {
+            background-color: #0056b3;
+        }
+        .simplebutton:active {
+            background-color: #004380;
+        }
+        input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .centered {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.css">
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+</head>
+<body>
+
+<div id="game-screen">
+    <div id="hangman-game" class="container centered">
+        <div style=" border: 1px solid #9e9e9e; border-radius: 10px; width: max-content; padding: 10px">
+            <p id="signed-in-as-text">Signed in as [_]</p>
+            <button class="simplebutton" id="start-button" style="width: 100%; padding: 50px 100px; font-size: xx-large">Start Timer!</button>
+            <div id="real-guess" style="display: none">
+                <p id="timer" style="font-family: Pixel, 'Product Sans', monospace; text-align: center">0.0s</p>
+                <p id="you-died-text" style="display: none; font-family: QingFont, 'Product Sans', monospace; text-align: center">YOu Died!</p>
+                <img id="hangman-image" src="./hangmanStages/hangmanStart.png" alt="Hangman Image" style="width: 200px; display: none">
+                <p id="word-to-guess" style="text-align: center">_ _ _ _ _</p>
+                <p id="guessed-letters"></p>
+                <div id = "guessing-inputs">
+                    <input type="text" id="letter-input" maxlength="1">
+                    <button id="guess-letter-button" class="simplebutton">Guess</button>
+                </div>
+            </div>
+        </div>
+        <iframe id="leaderboard-frame" src="./leaderboardframe.html" style="border: none; display: none; margin-top: 20px; height: 800px; width: 800px"></iframe>
+    </div>
+</div>
+
+</body>
+
+<script type="module" src="./dailychallenge.js"></script>
+</html>

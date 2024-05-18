@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d93f7fac-f16b-47cb-b507-7b13f0b0ac54" name="Changes" comment="Add Rifle Game">
+      <change afterPath="$PROJECT_DIR$/badges/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/badges/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/badges/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/badges/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/badges/flipcard.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/badges/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNAME" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android-chrome-192x192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apple-touch-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chillgame.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/favicon-16x16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangman0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangman1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangman2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangman3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangman4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangman5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangmanDied.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hangmanStages/hangmanStart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leaderboardframe.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leaderboardframe.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/normalgame.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="package.json" />
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2eveWhpgREX75BFsk1V9csfatgh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Node.js.firebaseactions.js.executor&quot;: &quot;Debug&quot;,
+    &quot;Node.js.firebasetest.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.js.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.normalgame.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.test.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.20.2&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.18.96&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/qing/IdeaProjects/qingy2019.github.io&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.test.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/leaderboardframe" />
+      <recent name="$PROJECT_DIR$/chillgame" />
+      <recent name="$PROJECT_DIR$/fonts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d93f7fac-f16b-47cb-b507-7b13f0b0ac54" name="Changes" comment="" />
+      <created>1712789512857</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712789512857</updated>
+      <workItem from="1712789513981" duration="698000" />
+      <workItem from="1712795447449" duration="6767000" />
+      <workItem from="1712876734753" duration="21000" />
+      <workItem from="1712876819359" duration="620000" />
+      <workItem from="1712896484274" duration="615000" />
+      <workItem from="1712946084038" duration="33050000" />
+      <workItem from="1713049299420" duration="22854000" />
+      <workItem from="1713129355505" duration="25394000" />
+      <workItem from="1713282916657" duration="216000" />
+      <workItem from="1713283185520" duration="26499000" />
+      <workItem from="1713373631462" duration="6470000" />
+      <workItem from="1713388510750" duration="21988000" />
+      <workItem from="1713666422730" duration="5000" />
+      <workItem from="1713809107122" duration="3902000" />
+      <workItem from="1713815039740" duration="2387000" />
+      <workItem from="1714960137387" duration="2272000" />
+      <workItem from="1715480822796" duration="3000" />
+      <workItem from="1715992504660" duration="644000" />
+    </task>
+    <task id="LOCAL-00001" summary="improved">
+      <option name="closed" value="true" />
+      <created>1712848079072</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712848079072</updated>
+    </task>
+    <task id="LOCAL-00002" summary="intermediate commit">
+      <option name="closed" value="true" />
+      <created>1713372800116</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1713372800116</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Hangman V1.0">
+      <option name="closed" value="true" />
+      <created>1713391237140</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1713391237140</updated>
+    </task>
+    <task id="LOCAL-00004" summary="bug fix">
+      <option name="closed" value="true" />
+      <created>1713392215508</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1713392215508</updated>
+    </task>
+    <task id="LOCAL-00005" summary="bug fix">
+      <option name="closed" value="true" />
+      <created>1713392431864</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1713392431864</updated>
+    </task>
+    <task id="LOCAL-00006" summary="remove view counter">
+      <option name="closed" value="true" />
+      <created>1713395286736</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1713395286736</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added Chill Game Mode">
+      <option name="closed" value="true" />
+      <created>1713460590723</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1713460590723</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix bug">
+      <option name="closed" value="true" />
+      <created>1713492834107</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1713492834107</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add message">
+      <option name="closed" value="true" />
+      <created>1713810709396</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1713810709396</updated>
+    </task>
+    <task id="LOCAL-00010" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1714960299358</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1714960299358</updated>
+    </task>
+    <task id="LOCAL-00011" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1714960433556</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1714960433556</updated>
+    </task>
+    <task id="LOCAL-00012" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1714960601196</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1714960601196</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Add Rifle Game">
+      <option name="closed" value="true" />
+      <created>1715992600687</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1715992600687</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add Rifle Game">
+      <option name="closed" value="true" />
+      <created>1715992707194</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1715992707194</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.ttf" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="improved" />
+    <MESSAGE value="intermediate commit" />
+    <MESSAGE value="Hangman V1.0" />
+    <MESSAGE value="bug fix" />
+    <MESSAGE value="remove view counter" />
+    <MESSAGE value="Added Chill Game Mode" />
+    <MESSAGE value="fix bug" />
+    <MESSAGE value="add message" />
+    <MESSAGE value="minor changes" />
+    <MESSAGE value="Add Rifle Game" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Rifle Game" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="NodeJSConfigurationType">
+        <watch expression="scores[test1234]" language="JavaScript" />
+        <watch expression="scores[&quot;test1234&quot;]" language="JavaScript" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

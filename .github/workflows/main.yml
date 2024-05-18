@@ -1,0 +1,27 @@
+name: Update File
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+  workflow_dispatch:  # Manually trigger the workflow
+
+
+jobs:
+  update_file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Update file
+        run: |
+          echo "New content" > file.txt  # Modify this line to update the file as you need
+          git config --local user.email "qingy2019@outlook.com"
+          git config --local user.name "GitHub Action"
+          git add file.txt
+          git commit -m "Update file via GitHub Actions"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}

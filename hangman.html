@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shadow's Hangman Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style>
+        * {
+            font-family: "Product Sans", sans-serif;
+        }
+        .simplebutton {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .simplebutton:hover {
+            background-color: #0056b3;
+        }
+        .simplebutton:active {
+            background-color: #004380;
+        }
+        input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        .titlebutton {
+            padding: 15px 30px;
+            font-size: large
+        }
+        .centered {
+            display: flex;
+            justify-content: center;
+        }
+
+        @keyframes slide-up {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0.9;
+            }
+        }
+        @keyframes slide-down {
+            0% {
+                transform: translateY(0);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        .toast {
+            animation: slide-up 0.5s ease-out forwards;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+</head>
+<body>
+<h3 style="font-family: QingFont, 'Product Sans', monospace" class="centered">SHADOW'S Hangman</h3>
+
+<div class="centered" id="login-screen">
+    <div id="login-register" style="border: 1px solid #00a7f4; border-radius: 5px; width: max-content; padding: 10px;">
+        <input type="text" id="email-input" placeholder="Username" style="width: 100%; box-sizing: border-box;">
+        <br></br>
+        <input type="password" id="password-input" placeholder="Password" style="width: 100%; box-sizing: border-box;">
+
+        <br></br>
+        <button id="login-button" style="width: 100%" class="simplebutton">Login</button>
+        <br></br>
+        <button id="register-button" class="simplebutton">Create account with credentials</button>
+    </div>
+</div>
+<div class="centered" id="title-screen" style="display: none">
+    <div style="width: max-content">
+    <!--        <button id="play-daily-challenge" style="width: 100%" class="button-62">Play Daily Challenge</button>-->
+        <button class="pushable" id="play-daily-challenge" style="width: 100%">
+            <span class="shadow"></span>
+            <span class="edge blueedge"></span>
+            <span class="front titlebutton bluefront">
+                Play Daily Challenge
+            </span>
+        </button>
+        <br></br>
+        <button class="pushable" id="play-normal-game" style="width: 100%">
+            <span class="shadow"></span>
+            <span class="edge blueedge"></span>
+            <span class="front titlebutton bluefront">
+                Play Normal Game
+            </span>
+        </button>
+        <br></br>
+        <button class="pushable" id="play-rifle-game" style="width: 100%">
+            <span class="shadow"></span>
+            <span class="edge blueedge"></span>
+            <span class="front titlebutton bluefront">
+                Play Rifle Game
+            </span>
+        </button>
+        <br></br>
+        <button class="pushable" id="play-chill-game" style="width: 100%">
+            <span class="shadow"></span>
+            <span class="edge blueedge"></span>
+            <span class="front titlebutton bluefront">
+                Play Chill
+            </span>
+        </button>
+        <br></br>
+        <button class="pushable" id="show-leaderboard-button" style="width: 100%">
+            <span class="shadow"></span>
+            <span class="edge blueedge"></span>
+            <span class="front titlebutton bluefront">
+                Leaderboard
+            </span>
+        </button>
+        <br></br>
+        <button class="pushable" id="logout-button" style="width: 100%">
+            <span class="shadow" style="background: hsla(0,0%,84%,0.25);"></span>
+            <span class="edge" style="
+                background: linear-gradient(
+                        to left,
+                        hsl(0,0%,69%) 0%,
+                        hsl(0,0%,69%) 8%,
+                        hsl(0,0%,69%) 92%,
+                        hsl(0,0%,69%) 100%
+                );"></span>
+            <span class="front titlebutton" style="background: #d9d9d9; color: black; padding-bottom: 10px; padding-top: 10px">
+                Logout
+            </span>
+        </button>
+    </div>
+
+    <div style="border-radius: 10px; border: 2px solid black; width: 300px; margin-left: 20px; padding: 10px" id="message-div">
+        <p id="latest-message">
+            New message from Website Admin: <span id="message-text">Hello and welcome to Hangman!</span>
+        </p>
+        <button class="simplebutton" id="mark-as-read-button">
+            Mark as read
+        </button>
+    </div>
+</div>
+
+</body>
+
+<script type="module" src="./hangman-title.js"></script>
+</html>
