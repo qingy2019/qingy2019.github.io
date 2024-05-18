@@ -140,8 +140,8 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < bulletRadius + rifle.width / 2) {
                         // Bullet hits the gun, end the game
-                        alert('Game Over');
                         location.reload();
+                        return;
                     }
                     bullets2[i].x += Math.cos(bullets2[i].angle) * bulletSpeed;
                     bullets2[i].y += Math.sin(bullets2[i].angle) * bulletSpeed;
