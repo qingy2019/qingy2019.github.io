@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d93f7fac-f16b-47cb-b507-7b13f0b0ac54" name="Changes" comment="Bruh">
-      <change afterPath="$PROJECT_DIR$/aceofspades.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aceofspades.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ak47.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ak47.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/machinegun.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/machinegun.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/osteostriga.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/osteostriga.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rifle.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sunshot.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sunshot.wav" afterDir="false" />
+    <list default="true" id="d93f7fac-f16b-47cb-b507-7b13f0b0ac54" name="Changes" comment="update...??">
+      <change afterPath="$PROJECT_DIR$/riflegame.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/riflegame.html" beforeDir="false" afterPath="$PROJECT_DIR$/riflegame.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,18 +31,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "qingy2019"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;qingy2019&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/qingy2019/qingy2019.github.io.git",
-    "accountId": "a87fa0f5-a115-4f64-b59c-d1401cadf6d9"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/qingy2019/qingy2019.github.io.git&quot;,
+    &quot;accountId&quot;: &quot;a87fa0f5-a115-4f64-b59c-d1401cadf6d9&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -82,9 +76,9 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "npm",
-    "npm.test.executor": "Run",
+    "npm.test.executor": "Debug",
     "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -151,7 +145,8 @@
       <workItem from="1714960137387" duration="2272000" />
       <workItem from="1715480822796" duration="3000" />
       <workItem from="1715992504660" duration="644000" />
-      <workItem from="1715993181453" duration="22368000" />
+      <workItem from="1715993181453" duration="24260000" />
+      <workItem from="1716058943153" duration="4861000" />
     </task>
     <task id="LOCAL-00001" summary="improved">
       <option name="closed" value="true" />
@@ -289,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716013404054</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update...??">
+      <option name="closed" value="true" />
+      <created>1716055162550</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1716055162550</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -323,7 +326,8 @@
     <MESSAGE value="Update Code" />
     <MESSAGE value="Updated" />
     <MESSAGE value="Bruh" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bruh" />
+    <MESSAGE value="update...??" />
+    <option name="LAST_COMMIT_MESSAGE" value="update...??" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

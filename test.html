@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            display: block;
+            width: 1000px;
+            height: 1000px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="gameCanvas">
+    <div id="score">Score: 0</div>
+</canvas>
+</body>
+<script type="module">
+    const canvas = document.getElementById('gameCanvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    import {initializeApp} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
+    import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        child,
+        onValue
+    } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGZZocT50YPmsGvLIg4Yvx9Vj1Vedy_1Y",
+        authDomain: "profile-shadow37.firebaseapp.com",
+        projectId: "profile-shadow37",
+        storageBucket: "profile-shadow37.appspot.com",
+        messagingSenderId: "514283251344",
+        appId: "1:514283251344:web:3e7afd3c63f1e67fa5da15",
+        measurementId: "G-RMVCBHJ3L4",
+        databaseURL: "https://profile-shadow37-default-rtdb.firebaseio.com/",
+    };
+
+    // TODO: Replace the following with your app's Firebase project configuration
+    // See: https://firebase.google.com/docs/web/learn-more#config-object
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Initialize Realtime Database and get a reference to the service
+    const database = getDatabase(app);
+
+    let bulletRadius = 10;
+    let bullets = [];
+    let gameCode = 29384
+    let ref2 = ref(database, "riflegames/" + gameCode);
+    onValue(ref2, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        if (data) {
+            bullets.push(data);
+        }
+    })
+
+    function draw() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw bullets
+        console.log(bullets.length)
+        for (let i = 0; i < bullets.length; i++) {
+            if (bullets[i].visible) {
+
+                ctx.beginPath();
+                ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
+                ctx.fillStyle = 'black';
+                ctx.fill();
+
+                // Check if bullet hits the ball
+
+
+// Update bullet velocity based on the new angle
+                bullets[i].dx = Math.cos(bullets[i].angle) * 5;
+                bullets[i].dy = Math.sin(bullets[i].angle) * 5;
+                bullets[i].x += bullets[i].dx;
+                bullets[i].y += bullets[i].dy;
+                // Remove bullet if it goes out of the canvas
+                if (
+                    bullets[i].x < 0 ||
+                    bullets[i].x > canvas.width ||
+                    bullets[i].y < 0 ||
+                    bullets[i].y > canvas.height
+                ) {
+                    bullets.splice(i, 1);
+                    // Adjust index after removing element
+                    i--;
+                }
+            } else {
+                bullets.splice(i, 1);
+                // Adjust index after removing element
+                i--;
+            }
+        }
+    }
+
+    setInterval(() => {
+        draw();
+    }, 10)
+</script>
+</html>
