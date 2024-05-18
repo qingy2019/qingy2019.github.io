@@ -161,8 +161,8 @@
                     if (distance2 < bulletRadius + ball2.radius && bullets2[i].visible && !bullets2[i].shotByBall) {
                         // Bullet hits the ball, adjust ball's velocity accordingly
                         const angle = Math.atan2(dy2, dx2);
-                        ball2.dx -= Math.cos(angle) * bulletSpeed * 0.7;
-                        ball2.dy -= Math.sin(angle) * bulletSpeed * 0.7;
+                        ball2.dx -= Math.cos(angle) * bulletSpeed * 0.2;
+                        ball2.dy -= Math.sin(angle) * bulletSpeed * 0.2;
                         // Make bullet invisible
                         bullets2[i].visible = false;
                         if (!bullets2[i].shotByBall) {
@@ -236,7 +236,7 @@
         ctx.save();
         ctx.setLineDash([5, 15]); // Set line style to dashed
 
-        if (false) {
+        if (good) {
             ctx.strokeStyle = 'green';
             ctx.lineWidth = 10;
             // if (!lastTime) shoot();
