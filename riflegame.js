@@ -24,6 +24,7 @@ const database = getDatabase(app);
 let gameCode = 29384
 
 let ref2 = ref(database, "riflegames/" + gameCode);
+
 onValue(ref2, (snapshot) => {
     const data = snapshot.val();
     console.log(data);
@@ -62,12 +63,13 @@ function createParticles(x, y) {
 
     }
 }
+
 const rifleImg = new Image();
-rifleImg.onload = function() {
+rifleImg.onload = function () {
     init();
 };
-let good =false;
-rifleImg.onerror = function() {
+let good = false;
+rifleImg.onerror = function () {
     console.error("Failed to load rifle image.");
 };
 rifleImg.src = 'rifle.png';
@@ -102,13 +104,14 @@ function init() {
     document.addEventListener('mousemove', handleMouseMove);
     draw();
 }
+
 // setInterval(() => {
 //     if (good) shoot();
 // }, 200); // 1000 milliseconds = 1 second
 let lastTime = false;
 let dragging = false;
 
-canvas.addEventListener('mousedown', function(event) {
+canvas.addEventListener('mousedown', function (event) {
     const dx = event.clientX - canvas.getBoundingClientRect().left - rifle.x;
     const dy = event.clientY - canvas.getBoundingClientRect().top - rifle.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -117,16 +120,17 @@ canvas.addEventListener('mousedown', function(event) {
     }
 });
 
-canvas.addEventListener('mousemove', function(event) {
+canvas.addEventListener('mousemove', function (event) {
     if (dragging) {
         rifle.x = event.clientX - canvas.getBoundingClientRect().left;
         rifle.y = event.clientY - canvas.getBoundingClientRect().top;
     }
 });
 
-canvas.addEventListener('mouseup', function(event) {
+canvas.addEventListener('mouseup', function (event) {
     dragging = false;
 });
+
 function updateParticles() {
     for (let i = 0; i < particles.length; i++) {
         const particle = particles[i];
@@ -154,6 +158,7 @@ function updateParticles() {
         ctx.fill();
     }
 }
+
 function updateBall() {
     ball.dy += ball.gravity;
     ball.dy *= ball.dampening; // Dampen vertical velocity
@@ -212,7 +217,7 @@ function animateSunShotBullet(bullet) {
     bullet.dy = Math.sin(bullet.angle) * bulletSpeed;
     bullet.x += bullet.dx;
     bullet.y += bullet.dy;
-    bullet.sunShotBulletRadius+=0.4;
+    bullet.sunShotBulletRadius += 0.4;
 }
 
 
@@ -342,8 +347,7 @@ function draw() {
         }
         ctx.lineWidth = 10;
         // if (!lastTime) shoot();
-    }
-    else {
+    } else {
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
 
@@ -431,14 +435,12 @@ function draw() {
                     bullets.splice(i, 1);
                     // Adjust index after removing element
                     i--;
-                    set(ref2, bullets);
                 }
             }
         } else {
             bullets.splice(i, 1);
             // Adjust index after removing element
             i--;
-            set(ref2, bullets);
         }
     }
     for (let i = 0; i < bulletsNoHarm.length; i++) {
@@ -450,16 +452,17 @@ function draw() {
     updateParticles();
 
 }
-setInterval(draw, 1000 / 60); // 60 frames per second (FPS)
 
+setInterval(draw, 1000 / 60); // 60 frames per second (FPS)
 
 
 let recoilDistance = 10; // The distance the gun will move back when a shot is fired
 let recoilSpeed = 2; // The speed at which the gun will move back and then forward again
 
 let canShoot = true
+
 function recoil() {
-    let recoilBack = setInterval(function() {
+    let recoilBack = setInterval(function () {
         // Move the gun back in the opposite direction it's aiming
         rifle.x -= recoilSpeed * Math.cos(rifle.angle);
         rifle.y -= recoilSpeed * Math.sin(rifle.angle);
@@ -467,7 +470,7 @@ function recoil() {
         recoilDistance -= recoilSpeed;
         if (recoilDistance <= 0) {
             clearInterval(recoilBack); // Stop moving the gun back
-            let recoilForward = setInterval(function() {
+            let recoilForward = setInterval(function () {
                 // Move the gun forward in the direction it's aiming
                 rifle.x += recoilSpeed * Math.cos(rifle.angle);
                 rifle.y += recoilSpeed * Math.sin(rifle.angle);
@@ -482,11 +485,10 @@ function recoil() {
 }
 
 
-
 function shoot() {
     if (!canShoot) return;
 
-    let shootSound = new Audio(weapons[currentWeaponIndex].split('.')[0] +'.wav');
+    let shootSound = new Audio(weapons[currentWeaponIndex].split('.')[0] + '.wav');
     // Play the shooting sound
     shootSound.play();
     let bullet = {
@@ -590,7 +592,7 @@ document.addEventListener('keyup', (event) => {
     }
 
 });
-let weapons = ['rifle.png', 'machinegun.png', 'ak47.png','sunshot.png', 'osteostriga.png','aceofspades.png']; // Add the paths to your weapon images here
+let weapons = ['rifle.png', 'machinegun.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
 
 document.addEventListener('keydown', (event) => {
@@ -599,20 +601,20 @@ document.addEventListener('keydown', (event) => {
         currentWeaponIndex = (currentWeaponIndex + 1) % weapons.length;
         if (weapons[currentWeaponIndex] === 'rifle.png') {
             bulletSpeed = 15;
-            gunHeight=100;
+            gunHeight = 100;
             gunRPM = 180;
-            bulletRadius=15;
+            bulletRadius = 15;
             console.log("Bullet Speed: " + bulletSpeed)
         } else if (weapons[currentWeaponIndex] === 'machinegun.png') {
             bulletSpeed = 6;
             gunHeight = 100;
             gunRPM = 2000;
-            bulletRadius=5;
+            bulletRadius = 5;
         } else if (weapons[currentWeaponIndex] === 'ak47.png') {
             bulletSpeed = 10;
             gunHeight = 100;
             gunRPM = 600;
-            bulletRadius=8;
+            bulletRadius = 8;
         } else if (weapons[currentWeaponIndex] === "sunshot.png") {
             bulletSpeed = 14;
             gunHeight = 100;

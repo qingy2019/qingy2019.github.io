@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d93f7fac-f16b-47cb-b507-7b13f0b0ac54" name="Changes" comment="update...??">
-      <change afterPath="$PROJECT_DIR$/riflegame.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
+    <list default="true" id="d93f7fac-f16b-47cb-b507-7b13f0b0ac54" name="Changes" comment="update shit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/riflegame.html" beforeDir="false" afterPath="$PROJECT_DIR$/riflegame.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/riflegame.js" beforeDir="false" afterPath="$PROJECT_DIR$/riflegame.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +141,7 @@
       <workItem from="1715480822796" duration="3000" />
       <workItem from="1715992504660" duration="644000" />
       <workItem from="1715993181453" duration="24260000" />
-      <workItem from="1716058943153" duration="4861000" />
+      <workItem from="1716058943153" duration="5748000" />
     </task>
     <task id="LOCAL-00001" summary="improved">
       <option name="closed" value="true" />
@@ -292,7 +287,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716055162550</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="update shit">
+      <option name="closed" value="true" />
+      <created>1716067026717</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1716067026717</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +330,8 @@
     <MESSAGE value="Updated" />
     <MESSAGE value="Bruh" />
     <MESSAGE value="update...??" />
-    <option name="LAST_COMMIT_MESSAGE" value="update...??" />
+    <MESSAGE value="update shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="update shit" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
