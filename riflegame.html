@@ -84,7 +84,7 @@
         dx: 2,
         dy: 2,
         gravity: 0.2,
-        dampening: 0.999
+        dampening: 0.99
     };
 
     function init() {
@@ -112,6 +112,27 @@
     //     if (good) shoot();
     // }, 200); // 1000 milliseconds = 1 second
     let lastTime = false;
+    let dragging = false;
+
+    canvas.addEventListener('mousedown', function(event) {
+        const dx = event.clientX - canvas.getBoundingClientRect().left - rifle.x;
+        const dy = event.clientY - canvas.getBoundingClientRect().top - rifle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < rifle.width / 2) {
+            dragging = true;
+        }
+    });
+
+    canvas.addEventListener('mousemove', function(event) {
+        if (dragging) {
+            rifle.x = event.clientX - canvas.getBoundingClientRect().left;
+            rifle.y = event.clientY - canvas.getBoundingClientRect().top;
+        }
+    });
+
+    canvas.addEventListener('mouseup', function(event) {
+        dragging = false;
+    });
     function draw() {
         const ball2 = {
             x: ball.x,
@@ -137,12 +158,6 @@
                     ctx.fill();
                     const dx = bullets2[i].x - rifle.x;
                     const dy = bullets2[i].y - rifle.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < bulletRadius + rifle.width / 2) {
-                        // Bullet hits the gun, end the game
-                        location.reload();
-                        return;
-                    }
                     bullets2[i].x += Math.cos(bullets2[i].angle) * bulletSpeed;
                     bullets2[i].y += Math.sin(bullets2[i].angle) * bulletSpeed;
                 } else if (bullets2[i].visible) {
@@ -227,11 +242,15 @@
         const dy = mouseY - rifle.y;
         rifle.angle = Math.atan2(dy, dx);
 
-        // Draw rifle
+        let aspectRatio = rifleImg.width / rifleImg.height;
+        let desiredHeight = 100; // or whatever height you want
+        let calculatedWidth = desiredHeight * aspectRatio;
+
+// Draw rifle
         ctx.save();
         ctx.translate(rifle.x, rifle.y);
         ctx.rotate(rifle.angle);
-        ctx.drawImage(rifleImg, -rifle.width / 2, -rifle.height / 2, rifle.width, rifle.height);
+        ctx.drawImage(rifleImg, -calculatedWidth / 2, -desiredHeight / 2, calculatedWidth, desiredHeight);
         ctx.restore();
         ctx.save();
         ctx.setLineDash([5, 15]); // Set line style to dashed
@@ -297,12 +316,6 @@
                 ctx.fill();
                 const dx = bullets[i].x - rifle.x;
                 const dy = bullets[i].y - rifle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < bulletRadius + rifle.width / 2) {
-                    // Bullet hits the gun, end the game
-                    alert('Game Over');
-                    location.reload();
-                }
                 bullets[i].x += Math.cos(bullets[i].angle) * bulletSpeed;
                 bullets[i].y += Math.sin(bullets[i].angle) * bulletSpeed;
             } else if (bullets[i].visible) {
@@ -332,11 +345,34 @@
                         bullets[i].visible = false;
                     }
                 }
+                const dx = ball.x - bullets[i].x;
+                const dy = ball.y - bullets[i].y;
+                const angleToBall = Math.atan2(dy, dx);
+                let angleToMove = bullets[i].angle;
 
-                // Move bullet
-                bullets[i].x += Math.cos(bullets[i].angle) * bulletSpeed;
-                bullets[i].y += Math.sin(bullets[i].angle) * bulletSpeed;
+// Calculate the difference between the current angle and the target angle
+                let angleDifference = angleToBall - bullets[i].angle;
 
+// Adjust the angle difference to be between -π and π
+                if (angleDifference > Math.PI) angleDifference -= 2 * Math.PI;
+                if (angleDifference < -Math.PI) angleDifference += 2 * Math.PI;
+
+// Only adjust the bullet's angle if the angle difference is within a certain range
+                const maxAngleDifference = Math.PI / 4; // Adjust this value as needed
+                if (Math.abs(angleDifference) < maxAngleDifference) {
+                    // Clamp the angle difference to a maximum value
+                    const maxAngleChange = 0.1; // Adjust this value as needed
+                    angleDifference = Math.max(Math.min(angleDifference, maxAngleChange), -maxAngleChange);
+
+                    // Adjust the bullet's angle
+                    angleToMove += angleDifference;
+                }
+
+// Update bullet velocity based on the new angle
+                bullets[i].dx = Math.cos(angleToMove) * bulletSpeed;
+                bullets[i].dy = Math.sin(angleToMove) * bulletSpeed;
+                bullets[i].x += bullets[i].dx;
+                bullets[i].y += bullets[i].dy;
                 // Remove bullet if it goes out of the canvas
                 if (
                     bullets[i].x < 0 ||
