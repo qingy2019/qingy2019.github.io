@@ -50,7 +50,11 @@ onValue(ref2, (snapshot) => {
         console.log("Data Shooter, Current User: " + data.shooter + ", " + localStorage["currentUser"])
         console.log()
         for (let key in data) {
-            bullets.push(data[key]);
+            let bullet = data[key];
+            bullet.x = (bullet.x / bullet.screenWidth) * canvas.width;
+            bullet.y = (bullet.y / bullet.screenHeight) * canvas.height;
+            bullets.push(bullet);
+
             console.log(key);
         }
     }
@@ -417,8 +421,6 @@ function draw() {
                 animateSunShotBullet(bullets[i]);
             } else {
                 console.log(bullets[i].shooter + " " + localStorage["currentUser"])
-                bullets[i].x = (bullets[i].x / bullets[i].screenWidth) * canvas.width;
-                bullets[i].y = (bullets[i].y / bullets[i].screenHeight) * canvas.height;
                 if (weapons[currentWeaponIndex] === 'osteostriga.png') {
                     // Draw a dark green diamond for the bullet
                     ctx.beginPath();
