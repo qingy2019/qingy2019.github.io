@@ -47,7 +47,7 @@ onValue(ref2, (snapshot) => {
 
     const data = snapshot.val();
     console.log(data);
-    if (data && !(data.shooter === localStorage["currentUser"]) && !(data.id in bulletIDs)) {
+    if (data && !(data.shooter === localStorage["currentUser"])) {
         bullets.push(data);
     }
 })
