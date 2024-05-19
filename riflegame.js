@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
-import { getDatabase, ref, set,get, child, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
+import { getDatabase, ref, set,get, child, onValue, remove } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
 
 let lut = []; for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
@@ -16,7 +16,7 @@ function UUID()
         lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
 }
 
-let removeList = [];
+let removeList = new Set();
 
 
 const firebaseConfig = {
@@ -44,6 +44,7 @@ let gameCode = 29384
 let ref2 = ref(database, "riflegames/" + gameCode);
 
 onValue(ref2, (snapshot) => {
+
     const data = snapshot.val();
     console.log(data);
     if (data && !(data.shooter === localStorage["currentUser"]) && !(data.id in bulletIDs)) {
@@ -163,7 +164,7 @@ function updateParticles() {
         // Remove particle if its life span reaches 0
         if (particle.lifeSpan <= 0) {
             particles.splice(i, 1);
-            console.log("Removed");
+            // console.log("Removed");
             i--; // Adjust index after removing element
             continue;
         }
@@ -200,6 +201,15 @@ function updateBall() {
     ball.dx = Math.max(-maxSpeed, Math.min(maxSpeed, ball.dx));
     ball.dy = Math.max(-maxSpeed, Math.min(maxSpeed, ball.dy));
 }
+
+function cleanOutBullets() {
+    for (const idRemove of removeList) {
+        remove(ref(database, "riflegames/" + gameCode + "/" + idRemove))
+        // console.log("Removed BULLET " + idRemove)
+    }
+    removeList = new Set();
+}
+
 
 
 function animateSunShotBullet(bullet) {
@@ -241,6 +251,7 @@ function animateSunShotBullet(bullet) {
 
 setInterval(updateBall, 1000 / 60); // 60 frames per second (FPS
 function draw() {
+    cleanOutBullets()
     const ball2 = {
         x: ball.x,
         y: ball.y,
@@ -395,7 +406,7 @@ function draw() {
 
 
     // Draw bullets
-    console.log(bullets.length)
+    // console.log(bullets.length)
     for (let i = 0; i < bullets.length; i++) {
         if (bullets[i].visible) {
             if (bullets[i].isSunShot) {
@@ -453,19 +464,12 @@ function draw() {
                     bullets.splice(i, 1);
                     // Adjust index after removing element
                     i--;
-                    if (bullets[i].id in removeList) {
-                        ref(database, "riflegames/" + gameCode + "/" + bullets[i].id).remove();
-                    }
                 }
             }
         } else {
             bullets.splice(i, 1);
             // Adjust index after removing element
             i--;
-
-            if (bullets[i].id in removeList) {
-                ref(database, "riflegames/" + gameCode + "/" + bullets[i].id).remove();
-            }
         }
     }
     for (let i = 0; i < bulletsNoHarm.length; i++) {
@@ -516,14 +520,15 @@ function shoot() {
     let shootSound = new Audio(weapons[currentWeaponIndex].split('.')[0] + '.wav');
     // Play the shooting sound
     shootSound.play();
-    let id = UUID();
+    let idb  = Math.floor(Math.random() * 10000) + 1
+    // console.log("ID: " + idb)
     let bullet = {
         x: rifle.x + Math.cos(rifle.angle) * rifle.width / 2,
         y: rifle.y + Math.sin(rifle.angle) * rifle.width / 2,
         angle: rifle.angle,
         visible: true,
-        shooter: localStorage["currentUser"],
-        id: id
+        shooter: "shadow",
+        id: idb
     };
     // special cases -----
 
@@ -535,8 +540,10 @@ function shoot() {
     // -------------------
     bullets.push(bullet);
     // write the bullets array, with the bullet information, to the database (riflegames/gameCode)\
-    set(ref(database, "riflegames/" + gameCode + "/" + id), bullet);
-    removeList.push(id);
+    // console.log("Adding")
+    set(ref(database, "riflegames/" + gameCode + "/" + idb), bullet);
+    removeList.add(idb);
+    // console.log(removeList)
 }
 
 function handleMouseMove(event) {
@@ -556,7 +563,7 @@ let keys = {
 };
 document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
-    console.log(key);
+    // console.log(key);
     if (key in keys) {
         console.log("test");
         keys[key] = true;
@@ -632,7 +639,7 @@ document.addEventListener('keydown', (event) => {
             gunHeight = 100;
             gunRPM = 180;
             bulletRadius = 15;
-            console.log("Bullet Speed: " + bulletSpeed)
+            // console.log("Bullet Speed: " + bulletSpeed)
             bullets = [];
         } else if (weapons[currentWeaponIndex] === 'machinegun.png') {
             bulletSpeed = 6;
@@ -669,3 +676,4 @@ document.addEventListener('keydown', (event) => {
         rifleImg.src = weapons[currentWeaponIndex];
     }
 });
+
