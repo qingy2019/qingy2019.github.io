@@ -531,7 +531,6 @@ function shoot() {
         id: idb
     };
     // special cases -----
-
     if (weapons[currentWeaponIndex] === 'sunshot.png') {
         bullet.isSunShot = true;
         bullet.sunShotBulletRadius = 5;
