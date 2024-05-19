@@ -527,7 +527,7 @@ function shoot() {
         y: rifle.y + Math.sin(rifle.angle) * rifle.width / 2,
         angle: rifle.angle,
         visible: true,
-        shooter: "shadow",
+        shooter: localStorage["currentUser"],
         id: idb
     };
     // special cases -----
