@@ -50,8 +50,8 @@ onValue(ref2, (snapshot) => {
         console.log("Data Shooter, Current User: " + data.shooter + ", " + localStorage["currentUser"])
         console.log()
         for (let key in data) {
-            bullets.push(key);
-            console.log("Added");
+            bullets.push(data[key]);
+            console.log(key);
         }
     }
 })
