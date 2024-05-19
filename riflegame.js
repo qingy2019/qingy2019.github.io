@@ -414,6 +414,7 @@ function draw() {
             if (bullets[i].isSunShot) {
                 animateSunShotBullet(bullets[i]);
             } else {
+                console.log(bullets[i].shooter + " " + localStorage["currentUser"]
                 if (weapons[currentWeaponIndex] === 'osteostriga.png') {
                     // Draw a dark green diamond for the bullet
                     ctx.beginPath();
