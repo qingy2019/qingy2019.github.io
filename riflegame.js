@@ -417,6 +417,8 @@ function draw() {
                 animateSunShotBullet(bullets[i]);
             } else {
                 console.log(bullets[i].shooter + " " + localStorage["currentUser"])
+                bullets[i].x = (bullets[i].x / bullets[i].screenWidth) * canvas.width;
+                bullets[i].y = (bullets[i].y / bullets[i].screenHeight) * canvas.height;
                 if (weapons[currentWeaponIndex] === 'osteostriga.png') {
                     // Draw a dark green diamond for the bullet
                     ctx.beginPath();
@@ -530,6 +532,9 @@ function shoot() {
     let bullet = {
         x: rifle.x + Math.cos(rifle.angle) * rifle.width / 2,
         y: rifle.y + Math.sin(rifle.angle) * rifle.width / 2,
+        screenWidth: canvas.width,
+        screenHeight: canvas.height,
+        weapon: weapons[currentWeaponIndex],
         angle: rifle.angle,
         visible: true,
         shooter: localStorage["currentUser"],
@@ -598,11 +603,19 @@ document.addEventListener('keydown', (event) => {
     if (keys[' ']) {
         // Calculate the interval between shots in milliseconds
         const shootInterval = 60000 / gunRPM;
+        let currGunRPM = gunRPM
         // Start shooting
         if (shootIntervalId === null) {
             shoot();
             recoil();
+            console.log("GOGOGO 1")
             shootIntervalId = setInterval(function () {
+                console.log("GOGOGO")
+                if (currGunRPM !== gunRPM) {
+                    console.log("Switched | RPM: " + gunRPM + " | Current RPM: " + currGunRPM)
+                    clearInterval(shootIntervalId);
+                    shootIntervalId = null;
+                }
                 shoot();
                 recoil();
             }, shootInterval);
