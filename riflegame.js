@@ -2,6 +2,23 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getDatabase, ref, set,get, child, onValue } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js";
 
+
+let lut = []; for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
+function UUID()
+{
+    const d0 = Math.random() * 0xffffffff | 0;
+    let d1 = Math.random()*0xffffffff|0;
+    let d2 = Math.random()*0xffffffff|0;
+    let d3 = Math.random()*0xffffffff|0;
+    return lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
+        lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
+        lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
+        lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+}
+
+let removeList = [];
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyAGZZocT50YPmsGvLIg4Yvx9Vj1Vedy_1Y",
     authDomain: "profile-shadow37.firebaseapp.com",
@@ -20,6 +37,7 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
+const bulletIDs = new Set();
 
 let gameCode = 29384
 
@@ -28,7 +46,7 @@ let ref2 = ref(database, "riflegames/" + gameCode);
 onValue(ref2, (snapshot) => {
     const data = snapshot.val();
     console.log(data);
-    if (data && !(data.shooter === localStorage["currentUser"])) {
+    if (data && !(data.shooter === localStorage["currentUser"]) && !(data.id in bulletIDs)) {
         bullets.push(data);
     }
 })
@@ -435,12 +453,19 @@ function draw() {
                     bullets.splice(i, 1);
                     // Adjust index after removing element
                     i--;
+                    if (bullets[i].id in removeList) {
+                        ref(database, "riflegames/" + gameCode + "/" + bullets[i].id).remove();
+                    }
                 }
             }
         } else {
             bullets.splice(i, 1);
             // Adjust index after removing element
             i--;
+
+            if (bullets[i].id in removeList) {
+                ref(database, "riflegames/" + gameCode + "/" + bullets[i].id).remove();
+            }
         }
     }
     for (let i = 0; i < bulletsNoHarm.length; i++) {
@@ -491,12 +516,14 @@ function shoot() {
     let shootSound = new Audio(weapons[currentWeaponIndex].split('.')[0] + '.wav');
     // Play the shooting sound
     shootSound.play();
+    let id = UUID();
     let bullet = {
         x: rifle.x + Math.cos(rifle.angle) * rifle.width / 2,
         y: rifle.y + Math.sin(rifle.angle) * rifle.width / 2,
         angle: rifle.angle,
         visible: true,
-        shooter: localStorage["currentUser"]
+        shooter: localStorage["currentUser"],
+        id: id
     };
     // special cases -----
 
@@ -507,8 +534,9 @@ function shoot() {
 
     // -------------------
     bullets.push(bullet);
-    // write the bullets array, with the bullet information, to the database (riflegames/gameCode)
-    set(ref2, bullet);
+    // write the bullets array, with the bullet information, to the database (riflegames/gameCode)\
+    set(ref(database, "riflegames/" + gameCode + "/" + id), bullet);
+    removeList.push(id);
 }
 
 function handleMouseMove(event) {
@@ -605,31 +633,37 @@ document.addEventListener('keydown', (event) => {
             gunRPM = 180;
             bulletRadius = 15;
             console.log("Bullet Speed: " + bulletSpeed)
+            bullets = [];
         } else if (weapons[currentWeaponIndex] === 'machinegun.png') {
             bulletSpeed = 6;
             gunHeight = 100;
             gunRPM = 2000;
             bulletRadius = 5;
+            bullets = [];
         } else if (weapons[currentWeaponIndex] === 'ak47.png') {
             bulletSpeed = 10;
             gunHeight = 100;
             gunRPM = 600;
             bulletRadius = 8;
+            bullets = [];
         } else if (weapons[currentWeaponIndex] === "sunshot.png") {
             bulletSpeed = 14;
             gunHeight = 100;
             gunRPM = 150;
             bulletRadius = 16;
+            bullets = [];
         } else if (weapons[currentWeaponIndex] === "osteostriga.png") {
             bulletSpeed = 10;
             gunHeight = 100;
             gunRPM = 900;
             bulletRadius = 10;
+            bullets = [];
         } else if (weapons[currentWeaponIndex] === "aceofspades.png") {
             bulletSpeed = 15;
             gunHeight = 100;
             gunRPM = 120;
             bulletRadius = 10;
+            bullets = [];
         }
         bullets = [];
         rifleImg.src = weapons[currentWeaponIndex];
