@@ -46,9 +46,9 @@ let ref2 = ref(database, "riflegames/" + gameCode);
 onValue(ref2, (snapshot) => {
     const data = snapshot.val();
     // check if the data.shooter is not localStorage["currentUser"]
-    console.log("Data Shooter, Current User: " + data.shooter + ", " + localStorage["currentUser"])
-    console.log(data.shooter !== localStorage["currentUser"])
-    if (data && data.shooter !== localStorage["currentUser"]) {
+    if (data) {
+        console.log("Data Shooter, Current User: " + data.shooter + ", " + localStorage["currentUser"])
+        console.log(data.shooter !== localStorage["currentUser"])
         bullets.push(data);
         console.log("Added");
     }
