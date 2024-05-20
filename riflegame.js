@@ -596,24 +596,27 @@ function handleMouseMove(event) {
 let mouseX = canvas.width / 2;
 let mouseY = canvas.height / 2;
 
-let keys = {
-    'w': false,
-    'a': false,
-    's': false,
-    'd': false,
-    ' ': false
-};
+let keys = {}
 document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
     // console.log(key);
-    if (key in keys) {
-        console.log("test");
-        keys[key] = true;
-        console.log(keys)
+    console.log(key)
+    console.log("Key: " + key)
+    keys[key] = true;
+    console.log(keys)
+});
+let shootIntervalId = null;
+
+let moveSpeed = 5; // The speed at which the gun will move
+
+function updateRiflePosition() {
+    // check if the shift key is being pressed
+    if (keys['shift']) {
+        moveSpeed = 8;
+    } else {
+        moveSpeed = 5;
     }
-    let moveSpeed = 20
     if (keys['w']) {
-        console.log("test333");
         rifle.y -= moveSpeed;
     }
     if (keys['s']) {
@@ -625,8 +628,12 @@ document.addEventListener('keydown', (event) => {
     if (keys['d']) {
         rifle.x += moveSpeed;
     }
-});
-let shootIntervalId = null;
+}
+
+// Call this function in your game loop
+setInterval(() => {
+    updateRiflePosition();
+}, 1000 / 60); // 60 frames per second (FPS)
 
 document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
