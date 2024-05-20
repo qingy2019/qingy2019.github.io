@@ -117,6 +117,7 @@ let bulletsNoHarm = [];
 let bulletSpeed = 15;
 let gunHeight = 100;
 let gunRPM = 100;
+let gunDamage = 10;
 
 let rifle = {
     x: canvas.width / 2,
@@ -126,6 +127,7 @@ let rifle = {
     angle: 0
 };
 
+const ballBaseHealth = 1000
 let ball = {
     x: canvas.width / 2,
     y: canvas.height / 2,
@@ -134,13 +136,13 @@ let ball = {
     dy: 2,
     gravity: 0.2,
     dampening: 1,
-    health: 100
+    health: ballBaseHealth
 };
 
 function drawHealthBar() {
     let totalHealthWidth = 100; // The total width of the health bar
     let healthHeight = 10; // The height of the health bar
-    let lostHealthWidth = totalHealthWidth * (ball.health / 100); // The width of the lost health part
+    let lostHealthWidth = totalHealthWidth * (ball.health / ballBaseHealth); // The width of the lost health part
 
     ctx.fillStyle = 'green';
     ctx.fillRect(ball.x - totalHealthWidth / 2, ball.y - ball.radius - healthHeight - 10, totalHealthWidth, healthHeight);
@@ -241,7 +243,7 @@ function cleanOutBullets() {
 }
 
 function bulletHit() {
-    ball.health -= 10; // Decrease the health by 10
+    ball.health -= gunDamage; // Decrease the health by 10
     if (ball.health < 0) {
         ball.health = 0; // Ensure that health doesn't go below 0
     }
@@ -721,49 +723,64 @@ document.addEventListener('keyup', (event) => {
 let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
 
+let weaponInfo = {
+    'rifle.png': {
+        bulletSpeed: 15,
+        gunHeight: 100,
+        gunRPM: 180,
+        bulletRadius: 15,
+        gunDamage: 70
+    },
+    'ak47.png': {
+        bulletSpeed: 10,
+        gunHeight: 100,
+        gunRPM: 600,
+        bulletRadius: 8,
+        gunDamage: 27
+    },
+    'sunshot.png': {
+        bulletSpeed: 14,
+        gunHeight: 80,
+        gunRPM: 150,
+        bulletRadius: 16,
+        gunDamage: 80
+    },
+    'osteostriga.png': {
+        bulletSpeed: 10,
+        gunHeight: 100,
+        gunRPM: 900,
+        bulletRadius: 10,
+        gunDamage: 25
+    },
+    'aceofspades.png': {
+        bulletSpeed: 20,
+        gunHeight: 90,
+        gunRPM: 120,
+        bulletRadius: 10,
+        gunDamage: 84
+    },
+    'riskrunner.png': {
+        bulletSpeed: 15,
+        gunHeight: 100,
+        gunRPM: 900,
+        bulletRadius: 7,
+        gunDamage: 20
+    }
+}
+
+function setWeaponInfo(weaponName) {
+    bulletSpeed = weaponInfo[weaponName].bulletSpeed;
+    gunHeight = weaponInfo[weaponName].gunHeight;
+    gunRPM = weaponInfo[weaponName].gunRPM;
+    bulletRadius = weaponInfo[weaponName].bulletRadius;
+    gunDamage = weaponInfo[weaponName].gunDamage;
+}
 
 document.addEventListener('keydown', (event) => {
     if (event.key.toLowerCase() === 'e') {
         // Switch to the next weapon
         currentWeaponIndex = (currentWeaponIndex + 1) % weapons.length;
-        if (weapons[currentWeaponIndex] === 'rifle.png') {
-            bulletSpeed = 15;
-            gunHeight = 100;
-            gunRPM = 180;
-            bulletRadius = 15;
-            // console.log("Bullet Speed: " + bulletSpeed)
-            bullets = [];
-        } else if (weapons[currentWeaponIndex] === 'ak47.png') {
-            bulletSpeed = 10;
-            gunHeight = 100;
-            gunRPM = 600;
-            bulletRadius = 8;
-            bullets = [];
-        } else if (weapons[currentWeaponIndex] === "sunshot.png") {
-            bulletSpeed = 14;
-            gunHeight = 80;
-            gunRPM = 150;
-            bulletRadius = 16;
-            bullets = [];
-        } else if (weapons[currentWeaponIndex] === "osteostriga.png") {
-            bulletSpeed = 10;
-            gunHeight = 100;
-            gunRPM = 900;
-            bulletRadius = 10;
-            bullets = [];
-        } else if (weapons[currentWeaponIndex] === "aceofspades.png") {
-            bulletSpeed = 20;
-            gunHeight = 90;
-            gunRPM = 120;
-            bulletRadius = 10;
-            bullets = [];
-        } else if (weapons[currentWeaponIndex] === "riskrunner.png") {
-            bulletSpeed = 15;
-            gunHeight = 100;
-            gunRPM = 900;
-            bulletRadius = 7;
-            bullets = [];
-        }
+        setWeaponInfo(weapons[currentWeaponIndex]);
         bullets = [];
         rifleImg.src = weapons[currentWeaponIndex];
     }
