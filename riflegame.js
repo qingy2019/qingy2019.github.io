@@ -42,18 +42,26 @@ const bulletIDs = new Set();
 let gameCode = 29384
 
 let ref2 = ref(database, "riflegames/" + gameCode);
+let otherPlayerRifleImgs = {};
+let otherPlayerRifles = {};
+
 
 onValue(ref2, (snapshot) => {
     const data = snapshot.val();
     // check if the data.shooter is not localStorage["currentUser"]
-    if (data && (data.shooter !== localStorage["currentUser"])) {
+    if (data) {
         console.log("Data Shooter, Current User: " + data.shooter + ", " + localStorage["currentUser"])
         console.log()
         for (let key in data) {
             let bullet = data[key];
+            if (bullet.shooter === localStorage["currentUser"]) {
+                continue;
+            }
             bullet.x = (bullet.x / bullet.screenWidth) * canvas.width;
             bullet.y = (bullet.y / bullet.screenHeight) * canvas.height;
             bullets.push(bullet);
+            otherPlayerRifleImgs[data.shooter] = bullet.weapon;
+            otherPlayerRifles[data.shooter] = {x: bullet.rifleX, y: bullet.rifleY, angle: bullet.angle, rifleHeight: bullet.rifleHeight};
 
             console.log(key);
         }
@@ -372,9 +380,24 @@ function draw() {
     ctx.translate(rifle.x, rifle.y);
     ctx.rotate(rifle.angle);
     ctx.drawImage(rifleImg, -calculatedWidth / 2, -desiredHeight / 2, calculatedWidth, desiredHeight);
+
     ctx.restore();
+    for (let key in otherPlayerRifles) {
+        const rifleImg = new Image();
+        rifleImg.src = otherPlayerRifleImgs[key];
+        console.log(otherPlayerRifleImgs[key])
+        let aspR = rifleImg.width / rifleImg.height;
+        let desH = gunHeight; // or whatever height you want
+        let calcW = desH * aspR;
+        ctx.save();
+        ctx.translate(otherPlayerRifles[key].x, otherPlayerRifles[key].y);
+        ctx.rotate(otherPlayerRifles[key].angle);
+        ctx.drawImage(rifleImg, -calcW / 2, -desH / 2, calcW, desH);
+        ctx.restore();
+    }
+
     ctx.save();
-    ctx.setLineDash([5, 15]); // Set line style to dashed
+    ctx.setLineDash([5, 15]);
 
     if (good) {
         if (weapons[currentWeaponIndex] === 'sunshot.png') {
@@ -383,7 +406,7 @@ function draw() {
             ctx.strokeStyle = 'green';
         }
         ctx.lineWidth = 10;
-        // if (!lastTime) shoot();
+        // shoot();
     } else {
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
@@ -421,7 +444,7 @@ function draw() {
                 animateSunShotBullet(bullets[i]);
             } else {
                 console.log(bullets[i].shooter + " " + localStorage["currentUser"])
-                if (weapons[currentWeaponIndex] === 'osteostriga.png') {
+                if (bullets[i].weapon === 'osteostriga.png') {
                     // Draw a dark green diamond for the bullet
                     ctx.beginPath();
                     ctx.moveTo(bullets[i].x, bullets[i].y - bulletRadius);
@@ -534,6 +557,9 @@ function shoot() {
     let bullet = {
         x: rifle.x + Math.cos(rifle.angle) * rifle.width / 2,
         y: rifle.y + Math.sin(rifle.angle) * rifle.width / 2,
+        rifleX: rifle.x,
+        rifleY: rifle.y,
+        rifleHeight: gunHeight,
         screenWidth: canvas.width,
         screenHeight: canvas.height,
         weapon: weapons[currentWeaponIndex],
@@ -646,7 +672,7 @@ document.addEventListener('keyup', (event) => {
     }
 
 });
-let weapons = ['rifle.png', 'machinegun.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png']; // Add the paths to your weapon images here
+let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
 
 document.addEventListener('keydown', (event) => {
@@ -659,12 +685,6 @@ document.addEventListener('keydown', (event) => {
             gunRPM = 180;
             bulletRadius = 15;
             // console.log("Bullet Speed: " + bulletSpeed)
-            bullets = [];
-        } else if (weapons[currentWeaponIndex] === 'machinegun.png') {
-            bulletSpeed = 6;
-            gunHeight = 100;
-            gunRPM = 2000;
-            bulletRadius = 5;
             bullets = [];
         } else if (weapons[currentWeaponIndex] === 'ak47.png') {
             bulletSpeed = 10;
