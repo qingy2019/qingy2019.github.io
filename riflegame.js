@@ -61,7 +61,7 @@ onValue(ref2, (snapshot) => {
             bullet.y = (bullet.y / bullet.screenHeight) * canvas.height;
             bullets.push(bullet);
             otherPlayerRifleImgs[data.shooter] = bullet.weapon;
-            otherPlayerRifles[data.shooter] = {x: bullet.rifleX, y: bullet.rifleY, angle: bullet.angle, rifleHeight: bullet.rifleHeight};
+            otherPlayerRifles[data.shooter] = {x: bullet.rifleX, y: bullet.rifleY, angle: bullet.angle, rifleHeight: bullet.rifleHeight, screenWidth: bullet.screenWidth, screenHeight: bullet.screenHeight}
 
             console.log(key);
         }
@@ -389,8 +389,13 @@ function draw() {
         let aspR = rifleImg.width / rifleImg.height;
         let desH = gunHeight; // or whatever height you want
         let calcW = desH * aspR;
+        console.log("X: " + otherPlayerRifles[key].x + " | Y: " + otherPlayerRifles[key].y )
+        console.log("Canvas X,Y: " + canvas.width + ", " + canvas.height)
+        console.log("Other ScreenX,Y: " + otherPlayerRifles[key].screenWidth + ", " + otherPlayerRifles[key].screenHeight)
+        var newX = (otherPlayerRifles[key].x / otherPlayerRifles[key].screenWidth) * canvas.width;
+        var newY = (otherPlayerRifles[key].y / otherPlayerRifles[key].screenHeight) * canvas.height;
         ctx.save();
-        ctx.translate(otherPlayerRifles[key].x, otherPlayerRifles[key].y);
+        ctx.translate(newX, newY);
         ctx.rotate(otherPlayerRifles[key].angle);
         ctx.drawImage(rifleImg, -calcW / 2, -desH / 2, calcW, desH);
         ctx.restore();
