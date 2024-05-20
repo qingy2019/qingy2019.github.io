@@ -78,6 +78,7 @@ let particles = [];
 
 // Function to generate particles at a given position
 function createParticles(x, y) {
+    bulletHit()
     const numParticles = 30;
     const angleStep = (2 * Math.PI) / numParticles;
 
@@ -132,8 +133,21 @@ let ball = {
     dx: 2,
     dy: 2,
     gravity: 0.2,
-    dampening: 1
+    dampening: 1,
+    health: 100
 };
+
+function drawHealthBar() {
+    let totalHealthWidth = 100; // The total width of the health bar
+    let healthHeight = 10; // The height of the health bar
+    let lostHealthWidth = totalHealthWidth * (ball.health / 100); // The width of the lost health part
+
+    ctx.fillStyle = 'green';
+    ctx.fillRect(ball.x - totalHealthWidth / 2, ball.y - ball.radius - healthHeight - 10, totalHealthWidth, healthHeight);
+
+    ctx.fillStyle = 'red';
+    ctx.fillRect(ball.x - totalHealthWidth / 2, ball.y - ball.radius - healthHeight - 10, totalHealthWidth - lostHealthWidth, healthHeight);
+}
 
 function init() {
     document.addEventListener('mousemove', handleMouseMove);
@@ -226,7 +240,12 @@ function cleanOutBullets() {
     removeList = new Set();
 }
 
-
+function bulletHit() {
+    ball.health -= 10; // Decrease the health by 10
+    if (ball.health < 0) {
+        ball.health = 0; // Ensure that health doesn't go below 0
+    }
+}
 
 function animateSunShotBullet(bullet) {
     ctx.beginPath();
@@ -246,8 +265,6 @@ function animateSunShotBullet(bullet) {
         const angle = Math.atan2(dy2, dx2);
         ball.dx -= Math.cos(angle) * bulletSpeed * 0.2;
         ball.dy -= Math.sin(angle) * bulletSpeed * 0.4;
-        scoreCounter++;
-        document.getElementById('score').textContent = 'Score: ' + scoreCounter;
         createParticles(ball.x, ball.y);
         // Make bullet invisible
         bullet.visible = false;
@@ -433,10 +450,12 @@ function draw() {
     ctx.restore();
 
     // Draw ball
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'red';
-    ctx.fill();
+    if (ball.health > 0) {
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+    }
 
     // Update ball position
 
@@ -458,6 +477,12 @@ function draw() {
                     ctx.lineTo(bullets[i].x - bulletRadius * 2, bullets[i].y); // Increase distance for left point
                     ctx.closePath();
                     ctx.fillStyle = 'darkgreen';
+                    ctx.fill();
+                } else if (bullets[i].weapon === 'riskrunner.png') {
+                    // Draw a cyan bullet for the bullet
+                    ctx.beginPath();
+                    ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#00a7f4';
                     ctx.fill();
                 } else {
                     ctx.beginPath();
@@ -517,6 +542,7 @@ function draw() {
     }
     updateParticles();
 
+    drawHealthBar();
 }
 
 setInterval(draw, 1000 / 60); // 60 frames per second (FPS)
@@ -550,9 +576,16 @@ function recoil() {
     }, 1000 / 60); // 60 frames per second (FPS)
 }
 
-
+let prevShoot = new Date();
 function shoot() {
-    if (!canShoot) return;
+    // if (!canShoot) return;
+    let startDate = new Date();
+    if (startDate - prevShoot < (60000 / gunRPM)) {
+        return;
+    } else {
+        prevShoot = startDate;
+        recoil();
+    }
 
     let shootSound = new Audio(weapons[currentWeaponIndex].split('.')[0] + '.wav');
     // Play the shooting sound
@@ -628,6 +661,28 @@ function updateRiflePosition() {
     if (keys['d']) {
         rifle.x += moveSpeed;
     }
+    if (keys[' ']) {
+        shoot();
+        // Calculate the interval between shots in milliseconds
+        // const shootInterval = 60000 / gunRPM;
+        // let currGunRPM = gunRPM
+        // // Start shooting
+        // if (shootIntervalId === null) {
+        //     shoot();
+        //     recoil();
+        //     console.log("GOGOGO 1")
+        //     shootIntervalId = setInterval(function () {
+        //         console.log("GOGOGO")
+        //         if (currGunRPM !== gunRPM) {
+        //             console.log("Switched | RPM: " + gunRPM + " | Current RPM: " + currGunRPM)
+        //             clearInterval(shootIntervalId);
+        //             shootIntervalId = null;
+        //         }
+        //         shoot();
+        //         recoil();
+        //     }, shootInterval);
+        // }
+    }
 }
 
 // Call this function in your game loop
@@ -639,27 +694,6 @@ document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
     if (key in keys) {
         keys[key] = true;
-    }
-    if (keys[' ']) {
-        // Calculate the interval between shots in milliseconds
-        const shootInterval = 60000 / gunRPM;
-        let currGunRPM = gunRPM
-        // Start shooting
-        if (shootIntervalId === null) {
-            shoot();
-            recoil();
-            console.log("GOGOGO 1")
-            shootIntervalId = setInterval(function () {
-                console.log("GOGOGO")
-                if (currGunRPM !== gunRPM) {
-                    console.log("Switched | RPM: " + gunRPM + " | Current RPM: " + currGunRPM)
-                    clearInterval(shootIntervalId);
-                    shootIntervalId = null;
-                }
-                shoot();
-                recoil();
-            }, shootInterval);
-        }
     }
 });
 
@@ -684,8 +718,9 @@ document.addEventListener('keyup', (event) => {
     }
 
 });
-let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png']; // Add the paths to your weapon images here
+let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
+
 
 document.addEventListener('keydown', (event) => {
     if (event.key.toLowerCase() === 'e') {
@@ -706,7 +741,7 @@ document.addEventListener('keydown', (event) => {
             bullets = [];
         } else if (weapons[currentWeaponIndex] === "sunshot.png") {
             bulletSpeed = 14;
-            gunHeight = 100;
+            gunHeight = 80;
             gunRPM = 150;
             bulletRadius = 16;
             bullets = [];
@@ -717,10 +752,16 @@ document.addEventListener('keydown', (event) => {
             bulletRadius = 10;
             bullets = [];
         } else if (weapons[currentWeaponIndex] === "aceofspades.png") {
-            bulletSpeed = 15;
-            gunHeight = 100;
+            bulletSpeed = 20;
+            gunHeight = 90;
             gunRPM = 120;
             bulletRadius = 10;
+            bullets = [];
+        } else if (weapons[currentWeaponIndex] === "riskrunner.png") {
+            bulletSpeed = 15;
+            gunHeight = 100;
+            gunRPM = 900;
+            bulletRadius = 7;
             bullets = [];
         }
         bullets = [];
