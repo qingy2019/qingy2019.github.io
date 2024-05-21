@@ -503,8 +503,8 @@ function draw() {
                 if (distance2 < bulletRadius + ball.radius && bullets[i].visible && !bullets[i].shotByBall) {
                     // Bullet hits the ball, adjust ball's velocity accordingly
                     const angle = Math.atan2(dy2, dx2);
-                    ball.dx -= Math.cos(angle) * bulletSpeed * 0.2;
-                    ball.dy -= Math.sin(angle) * bulletSpeed * 0.2;
+                    ball.dx -= Math.cos(angle) * 1.5;
+                    ball.dy -= Math.sin(angle) * 1.5;
                     scoreCounter++;
                     document.getElementById('score').textContent = 'Score: ' + scoreCounter;
 
@@ -720,7 +720,7 @@ document.addEventListener('keyup', (event) => {
     }
 
 });
-let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png']; // Add the paths to your weapon images here
+let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png','montecarlo.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
 
 let weaponInfo = {
@@ -750,7 +750,7 @@ let weaponInfo = {
         gunHeight: 100,
         gunRPM: 900,
         bulletRadius: 10,
-        gunDamage: 25
+        gunDamage: 18
     },
     'aceofspades.png': {
         bulletSpeed: 20,
@@ -765,6 +765,13 @@ let weaponInfo = {
         gunRPM: 900,
         bulletRadius: 7,
         gunDamage: 20
+    },
+    'montecarlo.png': {
+        bulletSpeed: 16,
+        gunHeight: 150,
+        gunRPM: 600,
+        bulletRadius: 12,
+        gunDamage: 21
     }
 }
 
