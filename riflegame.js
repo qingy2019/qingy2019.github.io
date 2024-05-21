@@ -518,6 +518,12 @@ function draw() {
                     ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
                     ctx.fillStyle = 'green';
                     ctx.fill();
+                } else if (bullets[i].weapon === 'vexmythoclast.png') {
+                    // Draw a purple bullet for the bullet
+                    ctx.beginPath();
+                    ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#eb6434';
+                    ctx.fill();
                 } else {
                     ctx.beginPath();
                     ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
@@ -733,7 +739,7 @@ document.addEventListener('keyup', (event) => {
     }
 
 });
-let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png','montecarlo.png','theimmortal.png']; // Add the paths to your weapon images here
+let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png','montecarlo.png','theimmortal.png','vexmythoclast.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
 
 let weaponInfo = {
@@ -792,6 +798,13 @@ let weaponInfo = {
         gunRPM: 720,
         bulletRadius: 8,
         gunDamage: 23
+    },
+    'vexmythoclast.png': {
+        bulletSpeed: 16,
+        gunHeight: 100,
+        gunRPM: 450,
+        bulletRadius: 11,
+        gunDamage: 33
     }
 }
 
