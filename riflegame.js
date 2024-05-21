@@ -50,8 +50,6 @@ onValue(ref2, (snapshot) => {
     const data = snapshot.val();
     // check if the data.shooter is not localStorage["currentUser"]
     if (data) {
-        console.log("Data Shooter, Current User: " + data.shooter + ", " + localStorage["currentUser"])
-        console.log()
         for (let key in data) {
             let bullet = data[key];
             if (bullet.shooter === localStorage["currentUser"]) {
@@ -665,25 +663,6 @@ function updateRiflePosition() {
     }
     if (keys[' ']) {
         shoot();
-        // Calculate the interval between shots in milliseconds
-        // const shootInterval = 60000 / gunRPM;
-        // let currGunRPM = gunRPM
-        // // Start shooting
-        // if (shootIntervalId === null) {
-        //     shoot();
-        //     recoil();
-        //     console.log("GOGOGO 1")
-        //     shootIntervalId = setInterval(function () {
-        //         console.log("GOGOGO")
-        //         if (currGunRPM !== gunRPM) {
-        //             console.log("Switched | RPM: " + gunRPM + " | Current RPM: " + currGunRPM)
-        //             clearInterval(shootIntervalId);
-        //             shootIntervalId = null;
-        //         }
-        //         shoot();
-        //         recoil();
-        //     }, shootInterval);
-        // }
     }
 }
 
@@ -720,7 +699,7 @@ document.addEventListener('keyup', (event) => {
     }
 
 });
-let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png','montecarlo.png']; // Add the paths to your weapon images here
+let weapons = ['rifle.png', 'ak47.png', 'sunshot.png', 'osteostriga.png', 'aceofspades.png','riskrunner.png','montecarlo.png','theimmortal.png']; // Add the paths to your weapon images here
 let currentWeaponIndex = 0;
 
 let weaponInfo = {
@@ -772,6 +751,13 @@ let weaponInfo = {
         gunRPM: 600,
         bulletRadius: 12,
         gunDamage: 21
+    },
+    'theimmortal.png': {
+        bulletSpeed: 13,
+        gunHeight: 100,
+        gunRPM: 720,
+        bulletRadius: 10,
+        gunDamage: 23
     }
 }
 
