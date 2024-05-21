@@ -240,11 +240,39 @@ function cleanOutBullets() {
     removeList = new Set();
 }
 
-function bulletHit() {
-    ball.health -= gunDamage; // Decrease the health by 10
+let lastHitDate = new Date()
+let stacks = {
+    'targetlock': 0,
+    'poison': 0
+}
+setInterval(() => {
+    if (stacks['poison'] < 0) {
+        stacks['poison'] = 0
+    }
+    ball.health -= stacks['poison'] * 5
+    stacks['poison'] -= 1
     if (ball.health < 0) {
         ball.health = 0; // Ensure that health doesn't go below 0
     }
+}, 1000)
+function bulletHit() {
+    let useGunDamage = gunDamage
+    if (weapons[currentWeaponIndex] === 'theimmortal.png') {
+        let newDate = new Date();
+        if (newDate - lastHitDate <= 200) {
+            stacks['targetlock']++
+            useGunDamage = gunDamage + 5 * stacks['targetlock']
+        } else stacks['targetlock'] = 0
+    }
+    if (weapons[currentWeaponIndex] === 'osteostriga.png') {
+        stacks['poison']++
+        stacks['poison'] = Math.min(10, stacks['poison'])
+    }
+    ball.health -= useGunDamage; // Decrease the health by 10
+    if (ball.health < 0) {
+        ball.health = 0; // Ensure that health doesn't go below 0
+    }
+    lastHitDate = new Date()
 }
 
 function animateSunShotBullet(bullet) {
@@ -483,6 +511,12 @@ function draw() {
                     ctx.beginPath();
                     ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
                     ctx.fillStyle = '#00a7f4';
+                    ctx.fill();
+                } else if (bullets[i].weapon === 'theimmortal.png') {
+                    // Draw a purple bullet for the bullet
+                    ctx.beginPath();
+                    ctx.arc(bullets[i].x, bullets[i].y, bulletRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'green';
                     ctx.fill();
                 } else {
                     ctx.beginPath();
@@ -754,9 +788,9 @@ let weaponInfo = {
     },
     'theimmortal.png': {
         bulletSpeed: 13,
-        gunHeight: 100,
+        gunHeight: 120,
         gunRPM: 720,
-        bulletRadius: 10,
+        bulletRadius: 8,
         gunDamage: 23
     }
 }
