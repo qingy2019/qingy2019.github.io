@@ -123,7 +123,21 @@
 </div>
 
 
-<script>
+<script >
+    const cyrb53 = (str, seed = 0) => {
+        let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+        for(let i = 0, ch; i < str.length; i++) {
+            ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+        h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+        h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+        return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+    };
     class RandomNumberGenerator {
         constructor(seed) {
             this.seed = seed;
@@ -163,20 +177,7 @@
             let line = document.getElementById('message').value
             let result = ""
 
-            let numTotalSeed = 0;
-            for (let idx = 0; idx < seed.length; idx++) {
-                let i = seed[idx];
-                if (/^\d$/.test(i)) { // Check if i is a digit
-                    numTotalSeed += (idx % 2 === 0) ?
-                        parseInt(i) - 1 :
-                        parseInt(i) + 1;
-                } else {
-                    numTotalSeed += (idx % 2 === 0) ?
-                        i.charCodeAt(0) * numTotalSeed + 1 :
-                        i.charCodeAt(0) * numTotalSeed - 1;
-                }
-            }
-            numTotalSeed %= 100000000;
+            let numTotalSeed = cyrb53(seed)
 
             let rand = new RandomNumberGenerator(numTotalSeed); // Assuming you're using a seeded random library like seedrandom.js
             let pinStr = []
@@ -194,21 +195,7 @@
             let line = document.getElementById('message').value
             let result = ""
 
-            let numTotalSeed = 0;
-            for (let idx = 0; idx < seed.length; idx++) {
-                let i = seed[idx];
-                if (/^\d$/.test(i)) { // Check if i is a digit
-                    numTotalSeed += (idx % 2 === 0) ?
-                        parseInt(i) - 1 :
-                        parseInt(i) + 1;
-                } else {
-                    numTotalSeed += (idx % 2 === 0) ?
-                        i.charCodeAt(0) * numTotalSeed + 1 :
-                        i.charCodeAt(0) * numTotalSeed - 1;
-                }
-            }
-
-            numTotalSeed %= 100000000;
+            let numTotalSeed = cyrb53(seed)
             let rand = new RandomNumberGenerator(numTotalSeed); // Assuming you're using a seeded random library like seedrandom.js
             let pinStr = []
             for (let i = 0; i < line.length; i++) {
