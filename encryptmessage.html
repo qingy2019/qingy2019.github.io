@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption/Decryption Toggle</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style>
+        .toggle {
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            position: relative;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+        input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        textarea {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+
+        .simplebutton {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .simplebutton:hover {
+            background-color: #0056b3;
+        }
+        .simplebutton:active {
+            background-color: #004380;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="font-family: NovaSquare, monospace; margin-left: 20px">Encrypt/Decrypt a Message</h2>
+<div class="container">
+    <div class="first" style="margin-top: 30px; margin-left: 20px">
+        <label class="toggle">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div class="second" style="margin-left: 40px; margin-top: 22px">
+        <p id="toggleStatus">Encrypt</p>
+    </div>
+    <div class="clear"></div>
+</div>
+<br></br>
+<input type="text" id="seed" style=" margin-left: 20px; width: 40%; border-radius: 10px; font-family: NovaSquare,monospace; font-size: large" placeholder="Enter your seed here"></input>
+<br></br>
+<textarea id="message" style="margin-left: 20px; width: 40%; height: 200px; border-radius: 4px; font-family: NovaSquare,monospace; font-size: large" placeholder="Enter your message here"></textarea>
+<br></br>
+<br></br>
+<button class="simplebutton" id="actionbutton" style="margin-left: 20px; font-size: large; border-radius: 50px; padding: 8px 16px; font-family: NovaSquare,monospace">Encrypt Message</button>
+<br></br>
+<div style="margin-left: 20px; border: 1px solid #ced4da; border-radius: 5px">
+<p id="result-text" style="margin-left: 20px; font-family: monospace"></p>
+</div>
+
+
+<script>
+    class RandomNumberGenerator {
+        constructor(seed) {
+            this.seed = seed;
+        }
+
+        // Generate a random integer in the range [min, max]
+        genNum(min, max) {
+            // Ensure min and max are integers
+            min = Math.ceil(min);
+            max = Math.floor(max);
+
+            // Use the seed to generate a deterministic random number
+            const x = Math.sin(this.seed++) * 10000;
+            return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+        }
+    }
+    const toggleSwitch = document.getElementById('toggleSwitch');
+    const toggleStatus = document.getElementById('toggleStatus');
+    const actionButton = document.getElementById('actionbutton');
+    const resultText = document.getElementById('result-text');
+
+    toggleSwitch.addEventListener('change', function() {
+        if (this.checked) {
+            toggleStatus.textContent = 'Decrypt';
+        } else {
+            toggleStatus.textContent = 'Encrypt';
+        }
+        if (this.checked) {
+            actionButton.textContent = 'Decrypt Message';
+        } else {
+            actionButton.textContent = 'Encrypt Message';
+        }
+    });
+    actionButton.addEventListener('click', async function () {
+        if (!toggleSwitch.checked) {
+            let seed = document.getElementById('seed').value
+            let line = document.getElementById('message').value
+            let result = ""
+
+            let numTotalSeed = 0;
+            for (let idx = 0; idx < seed.length; idx++) {
+                let i = seed[idx];
+                if (/^\d$/.test(i)) { // Check if i is a digit
+                    numTotalSeed += (idx % 2 === 0) ?
+                        parseInt(i) - 1 :
+                        parseInt(i) + 1;
+                } else {
+                    numTotalSeed += (idx % 2 === 0) ?
+                        i.charCodeAt(0) * numTotalSeed + 1 :
+                        i.charCodeAt(0) * numTotalSeed - 1;
+                }
+            }
+            numTotalSeed %= 100000000;
+
+            let rand = new RandomNumberGenerator(numTotalSeed); // Assuming you're using a seeded random library like seedrandom.js
+            let pinStr = []
+            for (let i = 0; i < line.length; i++) {
+                pinStr.push((rand.genNum(-100, 100)));
+            }
+            for (let i = 0; i < line.length; i++) {
+                let pin = line.charCodeAt(i) + (numTotalSeed + pinStr[i]);
+                let char = String.fromCharCode(pin);
+                result += char;
+            }
+            resultText.textContent = result;
+        } else {
+            let seed = document.getElementById('seed').value
+            let line = document.getElementById('message').value
+            let result = ""
+
+            let numTotalSeed = 0;
+            for (let idx = 0; idx < seed.length; idx++) {
+                let i = seed[idx];
+                if (/^\d$/.test(i)) { // Check if i is a digit
+                    numTotalSeed += (idx % 2 === 0) ?
+                        parseInt(i) - 1 :
+                        parseInt(i) + 1;
+                } else {
+                    numTotalSeed += (idx % 2 === 0) ?
+                        i.charCodeAt(0) * numTotalSeed + 1 :
+                        i.charCodeAt(0) * numTotalSeed - 1;
+                }
+            }
+
+            numTotalSeed %= 100000000;
+            let rand = new RandomNumberGenerator(numTotalSeed); // Assuming you're using a seeded random library like seedrandom.js
+            let pinStr = []
+            for (let i = 0; i < line.length; i++) {
+                pinStr.push((rand.genNum(-100, 100)));
+            }
+            for (let i = 0; i < line.length; i++) {
+                let pin = line.charCodeAt(i) - (numTotalSeed + pinStr[i]);
+                let char = String.fromCharCode(pin);
+                result += char;
+            }
+            resultText.textContent = result;
+        }
+    })
+</script>
+
+</body>
+</html>

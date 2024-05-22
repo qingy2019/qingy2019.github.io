@@ -46,6 +46,7 @@ const playChillGameButton = document.getElementById('play-chill-game');
 const playRifleGameButton = document.getElementById('play-rifle-game');
 const markAsReadButton = document.getElementById('mark-as-read-button');
 const messageDiv = document.getElementById('message-div');
+const encryptMessage = document.getElementById('encrypt-message');
 
 
 const auth = getAuth();
@@ -195,6 +196,10 @@ markAsReadButton.addEventListener('click', function () {
         set(ref(database, 'users/' + localStorage["currentUser"]), data);
     });
 });
+
+encryptMessage.addEventListener('click', function () {
+    window.location.href = './encryptmessage.html';
+})
 if (localStorage["messageRead"]) {
     messageDiv.style.display = 'none';
 }
