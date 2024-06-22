@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="LifeViewer" content="viewer textarea"> <!--required tag-->
+    <script src="lv-plugin.js"></script> <!--assumes plug-in is in the same directory as html file-->
+    <style>
+        body{
+            margin:50px;
+        }
+        button{
+            font:12pt arial;
+        }
+        .lv-rle{
+
+            resize:none;
+            width:594px;
+            min-height:120px;
+            max-height:120px;
+            font:12pt arial;
+            background-color: white;
+        }
+        .lv-buttons{
+            margin-bottom:4px;
+        }
+    </style>
+</head>
+<body>
+<!--viewer container-->
+<div class="viewer">
+    <div class="lv-buttons" style="display: none">
+        <button onclick="document.getElementById('lv-text').innerHTML=''">Clear</button>
+        <button onclick="updateMe(this)">Show in Viewer</button>
+        <!--the element that calls updateMe must be in the viewer container-->
+    </div>
+    <textarea class="lv-rle" id="lv-text" style="display: none">  x = 3, y = 3, rule = Life
+ o$
+ obo$
+ 2o!
+ [[
+   THEME Inverse
+ ]]
+ </textarea><br/>
+    <canvas height=800 width=1200></canvas>
+</div>
+<!--end viewer container-->
+</body>
+<script>
+    //function to update the viewer
+    function updateMe(el){
+        var viewer=el.closest('.viewer');
+        var text=viewer.querySelector('.lv-rle').value;
+        var canvas=viewer.querySelector('canvas');
+        var ctx=canvas.getContext('2d');
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        var lv=new LifeViewer(ctx);
+        lv.load(text);
+        lv.draw();
+    }
+    //initialize the viewer
+    var viewer=document.querySelector('.viewer');
+    var text=viewer.querySelector('.lv-rle').value;
+    var canvas=viewer.querySelector('canvas');
+    var ctx=canvas.getContext('2d');
+    var lv=new LifeViewer(ctx);
+    lv.load(text);
+    lv.draw();
+</script>
+</html>
