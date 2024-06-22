@@ -26,12 +26,12 @@
 <body>
 <!--viewer container-->
 <div class="viewer">
-    <div class="lv-buttons" style="display: none">
+    <div class="lv-buttons">
         <button onclick="document.getElementById('lv-text').innerHTML=''">Clear</button>
         <button onclick="updateMe(this)">Show in Viewer</button>
         <!--the element that calls updateMe must be in the viewer container-->
     </div>
-    <textarea class="lv-rle" id="lv-text" style="display: none">  x = 3, y = 3, rule = Life
+    <textarea class="lv-rle" id="lv-text">  x = 3, y = 3, rule = Life
  o$
  obo$
  2o!
@@ -43,25 +43,4 @@
 </div>
 <!--end viewer container-->
 </body>
-<script>
-    //function to update the viewer
-    function updateMe(el){
-        var viewer=el.closest('.viewer');
-        var text=viewer.querySelector('.lv-rle').value;
-        var canvas=viewer.querySelector('canvas');
-        var ctx=canvas.getContext('2d');
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        var lv=new LifeViewer(ctx);
-        lv.load(text);
-        lv.draw();
-    }
-    //initialize the viewer
-    var viewer=document.querySelector('.viewer');
-    var text=viewer.querySelector('.lv-rle').value;
-    var canvas=viewer.querySelector('canvas');
-    var ctx=canvas.getContext('2d');
-    var lv=new LifeViewer(ctx);
-    lv.load(text);
-    lv.draw();
-</script>
 </html>
