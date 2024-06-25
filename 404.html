@@ -7,15 +7,14 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const path = window.location.pathname;
-            if (path.startsWith("/leetcode-solutions/")) {
-                const slug = path.replace("/leetcode-solutions/", "");
-                const possibleRedirects = ['https://oguser.xyz/redirect', 'https://beno.uk/random/cute_cat/', 'https://files.catbox.moe/29s6e0.mp4'];
-                const redirectUrl = possibleRedirects[Math.floor(Math.random() * possibleRedirects.length)];
-                window.location.href = redirectUrl;
-            } else {
-                // Optionally, display a 404 error message or redirect to the homepage
-                document.body.innerHTML = "<h1>Page not found</h1>";
+            const slug = path.replace("/leetcode-solutions/", "");
+            const possibleRedirects = ['JEFF'];
+            const redirectUrl = possibleRedirects[Math.floor(Math.random() * possibleRedirects.length)];
+            if (redirectUrl === 'JEFF') {
+                // show a google drive link in the document.body
+                document.body.innerHTML = "<h1>https://drive.google.com/file/d/1cSUWLt8abFE0BTu1auO1qk1M8x5JCb4L/view</h1><a href='#'>";
             }
+            window.location.href = redirectUrl;
         });
     </script>
 </head>
