@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const path = window.location.pathname;
+            if (path.startsWith("/leetcode-solutions/")) {
+                const slug = path.replace("/leetcode-solutions/", "");
+                const redirectUrl = `https://oguser.xyz/redirect`;
+                window.location.href = redirectUrl;
+            } else {
+                // Optionally, display a 404 error message or redirect to the homepage
+                document.body.innerHTML = "<h1>Page not found</h1>";
+            }
+        });
+    </script>
+</head>
+<body>
+<h1>Redirecting...</h1>
+</body>
+</html>
